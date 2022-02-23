@@ -2,13 +2,14 @@ package ui;
 
 import exception.HangmanException;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontSmoothingType;
 import javafx.scene.text.Text;
@@ -20,8 +21,8 @@ public class MainMenu extends Parent {
 	
 	public MainMenu(Pane root) {
 		this.root = root;
-		this.width = root.getWidth();
-		this.height = root.getHeight();
+		this.width = root.getPrefWidth();
+		this.height = root.getPrefHeight();
 		
 		VBox menu = new VBox(50);
 		menu.setTranslateX(width / 2);
@@ -73,20 +74,24 @@ public class MainMenu extends Parent {
 		
 		public MenuButton(String s) {
 			text = new Text(s);
-			Font font = Font.loadFont("C:/Users/andre/Desktop/Multimedia/hangman/src/resources/fonts/Eraser.ttf", 60);
+			Font font = Font.loadFont("file:src/resources/fonts/EraserRegular.ttf", 40);
 			text.setFont(font);
-			text.setFill(null);
-			text.setStroke(Color.WHITESMOKE);
+			text.setFill(Paint.valueOf("#e0dbd1"));
 			getChildren().addAll(text);
 			
 			this.setOnMouseEntered(mouseEvent -> {
-				text.setStrikethrough(true);
 				text.setFontSmoothingType(FontSmoothingType.LCD);
+				text.setStroke(Paint.valueOf("#000000"));
+				setCursor(Cursor.HAND);
+				text.setUnderline(true);
 			});
 			
 			this.setOnMouseExited(mouseEvent -> {
-				text.setStrikethrough(false);
 				text.setFontSmoothingType(null);
+				text.setStroke(null);
+				setCursor(Cursor.DEFAULT);
+				text.setUnderline(false);
+
 			});
 			
 			
