@@ -1,5 +1,6 @@
 package ui;
 
+import exception.HangmanException;
 import javafx.scene.Parent;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.StackPane;
@@ -24,16 +25,18 @@ public class MainMenu extends Parent {
 			inputDialog.setHeaderText("Enter OPEN_LIBRARY_ID");
 			inputDialog.showAndWait();
 			
-			String openLibraryId=inputDialog.getEditor().getText();
-			System.out.println(openLibraryId);
-			try {
-				Dictionary d = new Dictionary(openLibraryId);
+			String openLibraryId = inputDialog.getResult();
+
+			if (openLibraryId != null) {
+				try {
+					Dictionary d = new Dictionary(openLibraryId);
+					System.out.println(d.getWords());
+				} catch (HangmanException e) {
+					e.printStackTrace();
+				}
+
+				System.out.println("KREMALA FASISTA");
 			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			System.out.println("KREMALA FASISTA");
 		});
 		
 		MenuButton exitButton = new MenuButton("EXIT");

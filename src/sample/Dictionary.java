@@ -6,6 +6,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 
 import exception.HangmanException;
+import exception.URLException;
 import exception.UnbalancedException;
 import exception.UndersizeException;
 import jakarta.json.Json;
@@ -52,36 +53,48 @@ public class Dictionary {
 	}
 	
 	public Dictionary(String openLibraryId) throws HangmanException {
-		JsonObject obj = null;
-		try {
-			obj = getJson(openLibraryId);
-			
-			//get the string of the description
-			String description = obj.get("description").asJsonObject().get("value").toString();
-			
-			//remove punctuation https://stackoverflow.com/questions/18830813/how-can-i-remove-punctuation-from-input-text-in-java
-			description=description.replaceAll("\\p{Punct}","");
-			
-			//Turn all letters to capitals
-			description=description.toUpperCase();
-			
-			System.out.println(description);
-			words = createWordsList(description.split(" "));
-			
-			System.out.println("Total words: "+Integer.toString(numOfWordsTotal));
-			System.out.println("Total words longer than 9 characters: "+Integer.toString(numOfWordsAtLeastNineLong));
-			
-			if(numOfWordsTotal < 20 ){
-				throw new UndersizeException();
-			}
-			
-			if(numOfWordsAtLeastNineLong < 0.2*numOfWordsTotal){
-				throw new UnbalancedException(numOfWordsTotal,numOfWordsAtLeastNineLong);
-			}
-			
+		if (openLibraryId.isEmpty()) {
+			throw new HangmanException() {
+				@Override
+				public String getMessage() {
+					return "ID cannot be empty!!!";
+				}
+			};
 		}
-		catch (IOException e) {
-			e.printStackTrace();
+
+		else {
+			JsonObject obj = null;
+			try {
+				obj = getJson(openLibraryId);
+
+				// get the string of the description
+				String description = obj.get("description").asJsonObject().get("value").toString();
+
+				// remove punctuation
+				// https://stackoverflow.com/questions/18830813/how-can-i-remove-punctuation-from-input-text-in-java
+				description = description.replaceAll("\\p{Punct}", "");
+
+				// Turn all letters to capitals
+				description = description.toUpperCase();
+
+				System.out.println(description);
+				words = createWordsList(description.split(" "));
+
+				System.out.println("Total words: " + Integer.toString(numOfWordsTotal));
+				System.out.println(
+						"Total words longer than 9 characters: " + Integer.toString(numOfWordsAtLeastNineLong));
+
+				if (numOfWordsTotal < 20) {
+					throw new UndersizeException();
+				}
+
+				if (numOfWordsAtLeastNineLong < 0.2 * numOfWordsTotal) {
+					throw new UnbalancedException(numOfWordsTotal, numOfWordsAtLeastNineLong);
+				}
+
+			} catch (IOException e) {
+				throw new URLException();
+			}
 		}
 	}
 }
