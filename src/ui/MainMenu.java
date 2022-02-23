@@ -1,9 +1,11 @@
 package ui;
 
 import exception.HangmanException;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -13,12 +15,18 @@ import javafx.scene.text.Text;
 import sample.Dictionary;
 
 public class MainMenu extends Parent {
+	private Pane root;
+	private double width, height;
 	
-	public MainMenu(){
+	public MainMenu(Pane root) {
+		this.root = root;
+		this.width = root.getWidth();
+		this.height = root.getHeight();
 		
-		VBox menu = new VBox(10);
-		menu.setTranslateX(500);
-		menu.setTranslateY(500);
+		VBox menu = new VBox(50);
+		menu.setTranslateX(width / 2);
+		menu.setTranslateY(height / 2);
+		menu.setAlignment(Pos.CENTER);
 		
 		MenuButton startButton = new MenuButton("START");
 		startButton.setOnMouseClicked(mouseEvent -> {
