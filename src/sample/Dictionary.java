@@ -18,6 +18,20 @@ public class Dictionary {
 	private ArrayList<String> words;
 	private int numOfWordsTotal=0;
 	private int numOfWordsAtLeastNineLong=0;
+
+	public int getNumOfWordsTotal() {
+		return numOfWordsTotal;
+	}
+
+	public int getNumOfWordsAtLeastNineLong() {
+		return numOfWordsAtLeastNineLong;
+	}
+
+	public int getMaxWordLength() {
+		return maxWordLength;
+	}
+
+	private int maxWordLength = 0;
 	
 	private JsonObject getJson(String openLibraryId) throws IOException {
 		URL url = new URL("https://openlibrary.org/works/"+openLibraryId+".json");
@@ -46,6 +60,9 @@ public class Dictionary {
 				numOfWordsTotal++;
 				if(word.length()>8){
 					numOfWordsAtLeastNineLong++;
+				}
+				if (word.length() > maxWordLength) {
+					maxWordLength = word.length();
 				}
 			}
 		}

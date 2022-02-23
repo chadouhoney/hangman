@@ -14,6 +14,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontSmoothingType;
 import javafx.scene.text.Text;
 import sample.Dictionary;
+import sample.Game;
 
 public class MainMenu extends Parent {
 	private Pane root;
@@ -38,7 +39,7 @@ public class MainMenu extends Parent {
 			String openLibraryId = inputDialog.getResult();
 
 			if (openLibraryId != null) {
-				Dictionary d;
+				Dictionary d = null;
 				Boolean everythingok = true;
 				try {
 					d = new Dictionary(openLibraryId);
@@ -50,6 +51,10 @@ public class MainMenu extends Parent {
 
 				if (everythingok) {
 					// start new game with random word from d
+					Game g = new Game(d, "DICK");
+					GameLayout gl = new GameLayout(g, root);
+					root.getChildren().removeAll(this);
+					root.getChildren().addAll(gl);
 				}
 
 				System.out.println("KREMALA FASISTA");
