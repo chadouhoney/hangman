@@ -13,9 +13,6 @@ import javafx.stage.Stage;
 import ui.MainMenu;
 
 public class Main extends Application {
-
-    
-    
     @Override
     public void start(Stage primaryStage) throws Exception{
         Pane root = new Pane();
@@ -33,13 +30,9 @@ public class Main extends Application {
         root.getChildren().addAll(imgView, mainMenu);
         
         Scene s = new  Scene(root, 900, 600);
-        
-        
-        
         primaryStage.setScene(s);
         primaryStage.show();
     }
-
 
     public static void main(String[] args) {
         launch(args);

@@ -77,12 +77,13 @@ public class Dictionary {
 				// Turn all letters to capitals
 				description = description.toUpperCase();
 
-				System.out.println(description);
+				// System.out.println(description);
 				words = createWordsList(description.split(" "));
 
 				System.out.println("Total words: " + Integer.toString(numOfWordsTotal));
 				System.out.println(
-						"Total words longer than 9 characters: " + Integer.toString(numOfWordsAtLeastNineLong));
+						"Total words longer than 9 characters: " + Integer.toString(numOfWordsAtLeastNineLong) + "("
+								+ Double.toString(numOfWordsAtLeastNineLong * 1.0 / numOfWordsTotal) + "%)");
 
 				if (numOfWordsTotal < 20) {
 					throw new UndersizeException();

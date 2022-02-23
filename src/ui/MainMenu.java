@@ -2,6 +2,7 @@ package ui;
 
 import exception.HangmanException;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -28,11 +29,18 @@ public class MainMenu extends Parent {
 			String openLibraryId = inputDialog.getResult();
 
 			if (openLibraryId != null) {
+				Dictionary d;
+				Boolean everythingok = true;
 				try {
-					Dictionary d = new Dictionary(openLibraryId);
+					d = new Dictionary(openLibraryId);
 					System.out.println(d.getWords());
 				} catch (HangmanException e) {
-					e.printStackTrace();
+					Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+					everythingok = false;
+				}
+
+				if (everythingok) {
+					// start new game with random word from d
 				}
 
 				System.out.println("KREMALA FASISTA");
