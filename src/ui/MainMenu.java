@@ -1,5 +1,7 @@
 package ui;
 
+import java.util.Random;
+
 import exception.HangmanException;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -51,7 +53,8 @@ public class MainMenu extends Parent {
 
 				if (everythingok) {
 					// start new game with random word from d
-					Game g = new Game(d, "DICK");
+					Random rand = new Random();
+					Game g = new Game(d, d.getWords().get(rand.nextInt(d.getWords().size())));
 					GameLayout gl = new GameLayout(g, root);
 					root.getChildren().removeAll(this);
 					root.getChildren().addAll(gl);

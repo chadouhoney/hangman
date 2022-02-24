@@ -19,8 +19,9 @@ public class GameLayout extends Parent {
 		width = parent.getPrefWidth();
 		try {
 			hangLayout = new HangLayout(this);
-			hangLayout.setPrefHeight(0.7 * height);
-			hangLayout.setPrefWidth(0.3 * width);
+			//
+			//
+			//
 			getChildren().addAll(hangLayout);
 		} catch (IOException e) {
 			e.printStackTrace();

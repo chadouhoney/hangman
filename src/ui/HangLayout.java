@@ -17,7 +17,7 @@ public class HangLayout extends Pane {
 	public HangLayout(GameLayout gl) throws IOException {
 		this.parent = gl;
 		InputStream is = Files.newInputStream(Paths.get("src/resources/images/stage0.png"));
-		Image img = new Image(is, getPrefWidth(), getPrefHeight(), false, false);
+		Image img = new Image(is, 0.3 * parent.getWidth(), 0.7 * parent.getHeight(), false, false);
 		is.close();
 		this.imgView = new ImageView(img);
 		getChildren().addAll(imgView);
