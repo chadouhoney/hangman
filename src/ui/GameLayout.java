@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
-import sample.Game;
+import logic.Game;
 
 public class GameLayout extends Parent {
 	private HangLayout hangLayout;

@@ -1,7 +1,11 @@
-package sample;
+package logic;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class Game {
 
@@ -17,8 +21,8 @@ public class Game {
 	private String targetWord;
 	private HashMap<Integer, ArrayList<String>> wordsLengths;
 	private HashMap<Integer, HashMap<Character, Double>> lettersProbabilities;
-	private int wrongLetters = 0;
-	private int correctLetters = 0;
+	private int wrongLetters = 0, correctLetters = 0, totalRounds = 0;
+	private Double wordsLength6 = 0.0, wordsLength7_9 = 0.0, wordsLength10plus = 0.0;
 	private boolean playerWin = false, playerDefeat = false;
 
 
@@ -31,6 +35,19 @@ public class Game {
 		for (int i = 6; i <= dict.getMaxWordLength(); i++) {
 			wordsLengths.put(i, new ArrayList<>());
 		}
+
+		wordsLength6 = wordsLengths.get(6).size() * 1.0 / dict.getNumOfWordsTotal();
+
+		int wordsLength7 = dict.getMaxWordLength() >= 7 ? wordsLengths.get(7).size() : 0;
+		int wordsLength8 = dict.getMaxWordLength() >= 8 ? wordsLengths.get(8).size() : 0;
+		int wordsLength9 = dict.getMaxWordLength() >= 9 ? wordsLengths.get(9).size() : 0;
+		wordsLength7_9 = (wordsLength7 + wordsLength8 + wordsLength9) * 1.0 / dict.getNumOfWordsTotal();
+
+		wordsLength10plus = 0.0;
+		for (int i = 10; i <= dict.getMaxWordLength(); i++) {
+			wordsLength10plus += wordsLengths.get(i).size();
+		}
+		wordsLength10plus = wordsLength10plus / dict.getNumOfWordsTotal();
 
 		// fill wordsLengths
 		for (String word : dict.getWords()) {
@@ -57,7 +74,7 @@ public class Game {
 	}
 
 	public void guess(Integer i, Character c) {
-
+		totalRounds++;
 		// CORRECT GUESS
 		if (targetWord.charAt(i) == c) {
 			// remove words that do not contain c in index i
@@ -98,6 +115,7 @@ public class Game {
 			if (correctLetters == targetWord.length()) {
 				System.out.println("GGWP");
 				playerWin = true;
+				logGame("VICTORY");
 			}
 
 		}
@@ -131,10 +149,34 @@ public class Game {
 			if (wrongLetters >= 6) {
 				System.out.println("YOU LOSE, GIT GUD NOOB");
 				playerDefeat = true;
+				logGame("DEFEAT");
+
 			}
 
 		}
+	}
 
+	public void logGame(String victoryOrDefeat) {
+		File f = new File("src/logging/history.txt");
+		try {
+			Scanner myReader = new Scanner(f);
+			String temp = "";
+			int gamesLeftToCopy = 4;
+			while (myReader.hasNextLine() && gamesLeftToCopy > 0) {
+				temp += (myReader.nextLine() + "\n");
+				gamesLeftToCopy--;
+			}
+			myReader.close();
+			FileWriter myWriter = new FileWriter(f.getPath());
+			String currentGameStr = "Target word: " + targetWord + ", Rounds: " + totalRounds + ", Result: PLAYER "
+					+ victoryOrDefeat;
+			myWriter.write(currentGameStr + "\n");
+			myWriter.write(temp);
+			myWriter.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public int getPlayerPoints() {

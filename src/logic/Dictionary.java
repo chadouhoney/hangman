@@ -1,4 +1,4 @@
-package sample;
+package logic;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -110,6 +110,7 @@ public class Dictionary {
 						}
 
 					}
+					myReader.close();
 
 					if (numOfWordsTotal < 20) {
 						throw new UndersizeException();

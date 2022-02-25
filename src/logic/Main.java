@@ -1,4 +1,4 @@
-package sample;
+package logic;
 
 import java.io.InputStream;
 import java.nio.file.Files;
