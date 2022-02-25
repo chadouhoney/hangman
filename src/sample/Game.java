@@ -18,7 +18,8 @@ public class Game {
 	private HashMap<Integer, ArrayList<String>> wordsLengths;
 	private HashMap<Integer, HashMap<Character, Double>> lettersProbabilities;
 	private int wrongLetters = 0;
-
+	private int correctLetters = 0;
+	private boolean playerWin = false, playerDefeat = false;
 
 	public Game(Dictionary dict, String target) {
 		this.targetWord = target;
@@ -55,6 +56,8 @@ public class Game {
 	}
 
 	public void guess(Integer i, Character c) {
+
+		// CORRECT GUESS
 		if (targetWord.charAt(i) == c) {
 			// remove words that do not contain c in index i
 			for (String word : wordsLengths.get(targetWord.length())) {
@@ -90,9 +93,15 @@ public class Game {
 			}
 
 			// check for victory
-			// todo
+			correctLetters++;
+			if (correctLetters == targetWord.length()) {
+				System.out.println("GGWP");
+				playerWin = true;
+			}
 
-		} else {
+		}
+		// WRONG GUESS
+		else {
 			// remove words that do not contain c in index i
 			for (String word : wordsLengths.get(targetWord.length())) {
 				if (Character.valueOf(word.charAt(i)) == c) {
@@ -118,12 +127,32 @@ public class Game {
 
 			// increase wrong attempts and check for defeat
 			wrongLetters++;
-
 			if (wrongLetters >= 6) {
 				System.out.println("YOU LOSE, GIT GUD NOOB");
+				playerDefeat = true;
 			}
 
 		}
 
+	}
+
+	public int getPlayerPoints() {
+		return playerPoints;
+	}
+
+	public String getTargetWord() {
+		return targetWord;
+	}
+
+	public boolean isPlayerWin() {
+		return playerWin;
+	}
+
+	public boolean isPlayerDefeat() {
+		return playerDefeat;
+	}
+
+	public HashMap<Integer, HashMap<Character, Double>> getLettersProbabilities() {
+		return lettersProbabilities;
 	}
 }
