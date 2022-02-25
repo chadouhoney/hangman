@@ -15,6 +15,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontSmoothingType;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import sample.Dictionary;
 import sample.Game;
 
@@ -28,10 +29,11 @@ public class MainMenu extends Parent {
 		this.height = root.getPrefHeight();
 		
 		VBox menu = new VBox(50);
-		menu.setTranslateX(width / 2);
+		menu.setTranslateX(0.7 * width);
 		menu.setTranslateY(height / 2);
 		menu.setAlignment(Pos.CENTER);
 		
+		// START BUTTON
 		MenuButton startButton = new MenuButton("START");
 		startButton.setOnMouseClicked(mouseEvent -> {
 			TextInputDialog inputDialog= new TextInputDialog("");
@@ -64,6 +66,7 @@ public class MainMenu extends Parent {
 			}
 		});
 		
+		// EXIT BUTTON
 		MenuButton exitButton = new MenuButton("EXIT");
 		exitButton.setOnMouseClicked(mouseEvent -> {
 			System.exit(0);
@@ -85,6 +88,7 @@ public class MainMenu extends Parent {
 			Font font = Font.loadFont("file:src/resources/fonts/EraserRegular.ttf", 40);
 			text.setFont(font);
 			text.setFill(Paint.valueOf("#e0dbd1"));
+			text.setTextAlignment(TextAlignment.CENTER);
 			getChildren().addAll(text);
 			
 			this.setOnMouseEntered(mouseEvent -> {

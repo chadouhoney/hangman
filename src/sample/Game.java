@@ -21,7 +21,6 @@ public class Game {
 
 
 	public Game(Dictionary dict, String target) {
-		// this.dictionary = dict;
 		this.targetWord = target;
 		this.wordsLengths = new HashMap<Integer, ArrayList<String>>();
 		System.out.println("TARGET WORD: '" + target + "'");
