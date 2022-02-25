@@ -187,11 +187,11 @@ public class Game {
 		return targetWord;
 	}
 
-	public boolean isPlayerWin() {
+	public boolean getPlayerWin() {
 		return playerWin;
 	}
 
-	public boolean isPlayerDefeat() {
+	public boolean getPlayerDefeat() {
 		return playerDefeat;
 	}
 
