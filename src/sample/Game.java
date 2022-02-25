@@ -21,6 +21,7 @@ public class Game {
 	private int correctLetters = 0;
 	private boolean playerWin = false, playerDefeat = false;
 
+
 	public Game(Dictionary dict, String target) {
 		this.targetWord = target;
 		this.wordsLengths = new HashMap<Integer, ArrayList<String>>();
