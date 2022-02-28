@@ -13,10 +13,10 @@ public class WantedLetterLayout extends StackPane {
 		underline = new Text("_");
 		letter = new Text("");
 
-		Font font = Font.loadFont("file:src/resources/fonts/EraserRegular.ttf", 50);
+		Font font = Font.loadFont("file:src/resources/fonts/CrayonCrumble.ttf", 50);
 		letter.setFont(font);
 
-		underline.setStyle("-fx-font-size: 80");
+		underline.setFont(Font.loadFont("file:src/resources/fonts/CrayonCrumble.ttf", 80));
 
 		getChildren().addAll(letter, underline);
 	}

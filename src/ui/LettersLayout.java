@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -27,13 +29,13 @@ public class LettersLayout extends GridPane {
 		List<Map.Entry<Character, Double>> list = new ArrayList<>(probs.entrySet());
 		list.sort(Map.Entry.comparingByValue());
 		for (int i = 25; i >= 0; i--) {
-			letters[i] = new LetterButton(list.get(i).getKey(), i);
+			letters[i] = new LetterButton(list.get(i).getKey(), i, probs.get(list.get(i).getKey()));
 			this.add(letters[i], (25 - i) % 13, (25 - i) / 13);
 		}
 
 		// Pane Customization
-		setHgap(10.0);
-		setVgap(10.0);
+		setHgap(20.0);
+		setVgap(20.0);
 	}
 
 	public void addRedCross() {
@@ -50,23 +52,34 @@ public class LettersLayout extends GridPane {
 
 		private boolean isClicked;
 		private int arrayPos;
-		private Text text;
+		private VBox letterAndProbability;
 		private Text overlay;
+		private Text probability;
 
-		public LetterButton(Character s, int pos) {
+		public LetterButton(Character s, int pos, Double p) {
+
+			System.out.println("P=" + p.toString());
 			this.arrayPos = pos;
-			text = new Text(s.toString());
-			Font font = Font.loadFont("file:src/resources/fonts/EraserRegular.ttf", 40);
-			text.setFont(font);
-			text.setFill(Paint.valueOf("#e0dbd1"));
+			letterAndProbability = new VBox(1);
+			letterAndProbability.setAlignment(Pos.CENTER);
+			Text letter = new Text(s.toString());
+			letter.setFont(Font.loadFont("file:src/resources/fonts/CrayonCrumble.ttf", 50));
+			letter.setFill(Paint.valueOf("#e0dbd1"));
+
+			Text probability = new Text(String.format("%1.2f", p));
+			probability.setFont(Font.loadFont("file:src/resources/fonts/CrayonCrumble.ttf", 15));
+			probability.setFill(Paint.valueOf("#e0dbd1"));
+
+			letterAndProbability.getChildren().addAll(letter, probability);
+
 			overlay = new Text("");
-			overlay.setFont(font);
-			getChildren().addAll(text);
+			overlay.setFont(Font.loadFont("file:src/resources/fonts/CrayonCrumble.ttf", 50));
+			getChildren().addAll(letterAndProbability);
 
 			this.setOnMouseEntered(e -> {
 				if (!isClicked && !layoutIsSolved) {
 					setCursor(Cursor.HAND);
-					text.setOpacity(0.5);
+					letter.setOpacity(0.5);
 				}
 
 			});
@@ -74,16 +87,16 @@ public class LettersLayout extends GridPane {
 			this.setOnMouseExited(e -> {
 				if (!isClicked && !layoutIsSolved) {
 					setCursor(Cursor.DEFAULT);
-					text.setOpacity(1);
+					letter.setOpacity(1);
 				}
 
 			});
 
 			this.setOnMouseClicked(mouseClick -> {
 				if (!isClicked && !layoutIsSolved) {
-					text.setOpacity(1);
+					letter.setOpacity(1);
 					guess.setLetterArrayPos(arrayPos);
-					guess.stringProperty.set(text.getText());
+					guess.stringProperty.set(letter.getText());
 					isClicked = true;
 				}
 			});

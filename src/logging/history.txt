@@ -1,5 +1,5 @@
-Target word: TOGETHER, Rounds: 7, Result: PLAYER DEFEAT
-Target word: DISTANT, Rounds: 19, Result: PLAYER VICTORY
-Target word: DISTANT, Rounds: 16, Result: PLAYER DEFEAT
-Target word: DISTANT, Rounds: 15, Result: PLAYER DEFEAT
-Target word: DISTANT, Rounds: 14, Result: PLAYER DEFEAT
+Target word: ENEMIES, Rounds: 10, Result: PLAYER DEFEAT
+Target word: ENEMIES, Rounds: 8, Result: PLAYER DEFEAT
+Target word: ENEMIES, Rounds: 7, Result: PLAYER DEFEAT
+Target word: ENEMIES, Rounds: 6, Result: PLAYER DEFEAT
+Target word: SWEEPING, Rounds: 11, Result: PLAYER DEFEAT

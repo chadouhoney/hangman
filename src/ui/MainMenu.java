@@ -133,7 +133,7 @@ public class MainMenu extends Parent {
 
 		public MenuButton(String s) {
 			text = new Text(s);
-			Font font = Font.loadFont("file:src/resources/fonts/EraserRegular.ttf", 40);
+			Font font = Font.loadFont("file:src/resources/fonts/CrayonCrumble.ttf", 70);
 			text.setFont(font);
 			text.setFill(Paint.valueOf("#e0dbd1"));
 			text.setTextAlignment(TextAlignment.CENTER);
@@ -141,16 +141,14 @@ public class MainMenu extends Parent {
 
 			this.setOnMouseEntered(mouseEvent -> {
 				text.setFontSmoothingType(FontSmoothingType.LCD);
-				text.setStroke(Paint.valueOf("#000000"));
+				text.setOpacity(0.5);
 				setCursor(Cursor.HAND);
-				text.setUnderline(true);
 			});
 
 			this.setOnMouseExited(mouseEvent -> {
 				text.setFontSmoothingType(null);
-				text.setStroke(null);
 				setCursor(Cursor.DEFAULT);
-				text.setUnderline(false);
+				text.setOpacity(1.0);
 
 			});
 
