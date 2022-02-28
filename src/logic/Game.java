@@ -25,7 +25,6 @@ public class Game {
 	private Double wordsLength6 = 0.0, wordsLength7_9 = 0.0, wordsLength10plus = 0.0;
 	private boolean playerWin = false, playerDefeat = false;
 
-
 	public Game(Dictionary dict, String target) {
 		this.targetWord = target;
 		this.wordsLengths = new HashMap<Integer, ArrayList<String>>();
@@ -73,16 +72,12 @@ public class Game {
 
 	}
 
-	public void guess(Integer i, Character c) {
+	public boolean guess(Integer i, Character c) {
 		totalRounds++;
 		// CORRECT GUESS
 		if (targetWord.charAt(i) == c) {
 			// remove words that do not contain c in index i
-			for (String word : wordsLengths.get(targetWord.length())) {
-				if (Character.valueOf(word.charAt(i)) != c) {
-					wordsLengths.get(targetWord.length()).remove(word);
-				}
-			}
+			wordsLengths.get(targetWord.length()).removeIf(word -> Character.valueOf(word.charAt(i)) != c);
 
 			// award points to player
 			Double letterProb = lettersProbabilities.get(i).get(Character.valueOf(c));
@@ -103,7 +98,7 @@ public class Game {
 				for (String word : wordsLengths.get(targetWord.length())) {
 					m.put(word.charAt(i), m.get(word.charAt(i)) + 1.0);
 				}
-				for (Character cc = 'A'; c <= 'Z'; cc++) {
+				for (Character cc = 'A'; cc <= 'Z'; cc++) {
 					m.put(cc, m.get(cc) * 1.0 / wordsWithLengthEqualToTarget);
 				}
 				System.out.println(m);
@@ -117,16 +112,13 @@ public class Game {
 				playerWin = true;
 				logGame("VICTORY");
 			}
+			return true;
 
 		}
 		// WRONG GUESS
 		else {
 			// remove words that do not contain c in index i
-			for (String word : wordsLengths.get(targetWord.length())) {
-				if (Character.valueOf(word.charAt(i)) == c) {
-					wordsLengths.get(targetWord.length()).remove(word);
-				}
-			}
+			wordsLengths.get(targetWord.length()).removeIf(word -> Character.valueOf(word.charAt(i)) == c);
 			// subtract points from player (points cannot go below zero)
 			playerPoints = Math.max(playerPoints - 15, 0);
 
@@ -137,7 +129,7 @@ public class Game {
 				for (String word : wordsLengths.get(targetWord.length())) {
 					m.put(word.charAt(i), m.get(word.charAt(i)) + 1.0);
 				}
-				for (Character cc = 'A'; c <= 'Z'; cc++) {
+				for (Character cc = 'A'; cc <= 'Z'; cc++) {
 					m.put(cc, m.get(cc) * 1.0 / wordsWithLengthEqualToTarget);
 				}
 				System.out.println(m);
@@ -153,6 +145,7 @@ public class Game {
 
 			}
 
+			return false;
 		}
 	}
 

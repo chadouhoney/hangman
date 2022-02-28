@@ -31,7 +31,7 @@ public class HangLayout extends Pane {
 
 	public void updateHang(int i) throws IOException {
 		InputStream is = Files.newInputStream(Paths.get("src/resources/images/stage" + i + ".png"));
-		Image img = new Image(is, getPrefWidth(), getPrefHeight(), false, false);
+		Image img = new Image(is, 270, 630, false, false);
 		is.close();
 		imgView.setImage(img);
 	}

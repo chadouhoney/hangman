@@ -1,0 +1,5 @@
+Target word: LIFETIME, Rounds: 15, Result: PLAYER VICTORY
+Target word: LIFETIME, Rounds: 10, Result: PLAYER DEFEAT
+Target word: LIFETIME, Rounds: 8, Result: PLAYER DEFEAT
+Target word: TERROR, Rounds: 16, Result: PLAYER VICTORY
+Target word: TERROR, Rounds: 14, Result: PLAYER DEFEAT
