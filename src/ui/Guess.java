@@ -7,11 +7,13 @@ public class Guess {
 	private int forPosition;
 	private int letterArrayPos;
 	public SimpleStringProperty stringProperty;
-	public SimpleBooleanProperty booleanProperty;
+	public SimpleBooleanProperty playerWon;
+	public SimpleBooleanProperty playerLost;
 
 	public Guess() {
 		stringProperty = new SimpleStringProperty();
-		booleanProperty = new SimpleBooleanProperty();
+		playerWon = new SimpleBooleanProperty(false);
+		playerLost = new SimpleBooleanProperty(false);
 	}
 
 	public int getForPosition() {
@@ -24,26 +26,6 @@ public class Guess {
 
 	public String getStringProperty() {
 		return stringProperty.get();
-	}
-
-	public SimpleStringProperty stringPropertyProperty() {
-		return stringProperty;
-	}
-
-	public void setStringProperty(String stringProperty) {
-		this.stringProperty.set(stringProperty);
-	}
-
-	public boolean isBooleanProperty() {
-		return booleanProperty.get();
-	}
-
-	public SimpleBooleanProperty booleanPropertyProperty() {
-		return booleanProperty;
-	}
-
-	public void setBooleanProperty(boolean booleanProperty) {
-		this.booleanProperty.set(booleanProperty);
 	}
 
 	public int getLetterArrayPos() {

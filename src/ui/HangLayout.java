@@ -5,11 +5,9 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.Pane;
 
 public class HangLayout extends Pane {
 
@@ -21,10 +19,6 @@ public class HangLayout extends Pane {
 		Image img = new Image(is, 270, 630, false, false);
 		is.close();
 		this.imgView = new ImageView(img);
-
-		setBorder(new Border(new BorderStroke(Color.BLACK, Color.BLACK, Color.WHITE, Color.BLACK,
-				BorderStrokeStyle.SOLID, BorderStrokeStyle.SOLID, BorderStrokeStyle.SOLID, BorderStrokeStyle.SOLID,
-				CornerRadii.EMPTY, new BorderWidths(5), Insets.EMPTY)));
 
 		getChildren().addAll(imgView);
 	}

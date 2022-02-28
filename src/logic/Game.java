@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import ui.Guess;
+
 public class Game {
 
 	private static HashMap<Character, Double> alphabet = new HashMap<Character, Double>() {
@@ -72,7 +74,9 @@ public class Game {
 
 	}
 
-	public boolean guess(Integer i, Character c) {
+	public boolean guess(Guess move) {
+		int i = move.getForPosition();
+		Character c = move.getStringProperty().charAt(0);
 		totalRounds++;
 		// CORRECT GUESS
 		if (targetWord.charAt(i) == c) {
@@ -110,6 +114,7 @@ public class Game {
 			if (correctLetters == targetWord.length()) {
 				System.out.println("GGWP");
 				playerWin = true;
+				move.playerWon.set(true);
 				logGame("VICTORY");
 			}
 			return true;
@@ -141,6 +146,7 @@ public class Game {
 			if (wrongLetters >= 6) {
 				System.out.println("YOU LOSE, GIT GUD NOOB");
 				playerDefeat = true;
+				move.playerLost.set(true);
 				logGame("DEFEAT");
 
 			}

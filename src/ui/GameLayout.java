@@ -3,20 +3,25 @@ package ui;
 import java.io.IOException;
 import java.util.HashMap;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.StageStyle;
 import logic.Game;
 
 public class GameLayout extends HBox {
+	// Layout Variables
 	private HangLayout hangLayout;
 	private LettersLayout[] lettersLayout;
 	private WantedLetterLayout[] wantedLetterLayout;
 	private HBox wantedLetterHBox;
 	private VBox mainVBox;
+	// For Layout Communication
 	private Guess guess;
-	private double width, height;
+	// Different variables
 	private Game game;
 	private int currentLetterLayout;
 	private int phase = 1;
@@ -29,7 +34,7 @@ public class GameLayout extends HBox {
 			guess = new Guess();
 			guess.setForPosition(currentLetterLayout);
 			guess.stringProperty.addListener(t -> {
-				boolean res = this.game.guess(guess.getForPosition(), guess.getStringProperty().toCharArray()[0]);
+				boolean res = this.game.guess(this.guess);
 				if (res) {
 					greenTickOnLetter();
 					wantedLetterLayout[guess.getForPosition()].setLetterString(guess.getStringProperty());
@@ -41,6 +46,24 @@ public class GameLayout extends HBox {
 						e.printStackTrace();
 					}
 				}
+			});
+
+			guess.playerWon.addListener(t -> {
+				ButtonType mainMenuBut = new ButtonType("Back to Main Menu");
+				ButtonType playAgainBut = new ButtonType("Play Again!");
+				Alert gameOver = new Alert(Alert.AlertType.NONE, "Game Over!", mainMenuBut, playAgainBut);
+				gameOver.setHeaderText("GGWP");
+				gameOver.initStyle(StageStyle.UNDECORATED);
+				gameOver.showAndWait();
+			});
+
+			guess.playerLost.addListener(t -> {
+				ButtonType mainMenuBut = new ButtonType("Back to Main Menu");
+				ButtonType playAgainBut = new ButtonType("Play Again!");
+				Alert gameOver = new Alert(Alert.AlertType.NONE, "Game Over!", mainMenuBut, playAgainBut);
+				gameOver.setHeaderText("YOU LOSE, GIT GUD NOOB");
+				gameOver.initStyle(StageStyle.UNDECORATED);
+				gameOver.showAndWait();
 			});
 
 			hangLayout = new HangLayout();

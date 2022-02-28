@@ -66,19 +66,6 @@ public class MainMenu extends Parent {
 						GameLayout gl = new GameLayout(g);
 						root.getChildren().removeAll(MainMenu.this);
 						root.getChildren().addAll(gl);
-						// VBox vBox = new VBox(10.0);
-						// try {
-						// HangLayout hangLayout = new HangLayout();
-						// LettersLayout lettersLayout = new
-						// LettersLayout(g.getLettersProbabilities().get(0));
-						// vBox.getChildren().addAll(hangLayout, lettersLayout);
-						// } catch (IOException e) {
-						// e.printStackTrace();
-						// }
-						//
-						// Stage stg = (Stage) root.getScene().getWindow();
-						// stg.setScene(new Scene(gl, 900, 600));
-						// System.out.println(vBox.getChildren());
 					}
 
 					System.out.println("KREMALA FASISTA");

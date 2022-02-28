@@ -5,9 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javafx.geometry.Insets;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -32,9 +31,6 @@ public class LettersLayout extends GridPane {
 		}
 
 		// Pane Customization
-		setBorder(new Border(new BorderStroke(Color.RED, Color.RED, Color.RED, Color.RED, BorderStrokeStyle.SOLID,
-				BorderStrokeStyle.SOLID, BorderStrokeStyle.NONE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,
-				new BorderWidths(5), Insets.EMPTY)));
 		setHgap(10.0);
 		setVgap(10.0);
 	}
