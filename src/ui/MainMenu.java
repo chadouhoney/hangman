@@ -59,19 +59,16 @@ public class MainMenu extends Parent {
 					everythingok = false;
 				}
 
-
-					if (everythingok) {
-						// start new game with random word from d
-						Random rand = new Random();
-						Game g = new Game(d, d.getWords().get(rand.nextInt(d.getWords().size())));
-						GameLayout gl = new GameLayout(g);
-						root.getChildren().removeAll(MainMenu.this);
-						root.getChildren().addAll(gl);
-					}
-
-					System.out.println("KREMALA FASISTA");
-
+				if (everythingok) {
+					// start new game with random word from d
+					Random rand = new Random();
+					Game g = new Game(d, d.getWords().get(rand.nextInt(d.getWords().size())));
+					GameLayout gl = new GameLayout(g);
+					root.getChildren().removeAll(MainMenu.this);
+					root.getChildren().addAll(gl);
 				}
+				System.out.println("KREMALA FASISTA");
+
 			}
 		});
 

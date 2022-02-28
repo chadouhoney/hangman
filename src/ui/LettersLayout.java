@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javafx.scene.Cursor;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
@@ -44,6 +45,7 @@ public class LettersLayout extends GridPane {
 		letters[guess.getLetterArrayPos()].greenTick();
 	}
 
+
 	protected class LetterButton extends StackPane {
 
 		private boolean isClicked;
@@ -60,6 +62,22 @@ public class LettersLayout extends GridPane {
 			overlay = new Text("");
 			overlay.setFont(font);
 			getChildren().addAll(text);
+
+			this.setOnMouseEntered(e -> {
+				if (!isClicked && !layoutIsSolved) {
+					setCursor(Cursor.HAND);
+					text.setOpacity(0.5);
+				}
+
+			});
+
+			this.setOnMouseExited(e -> {
+				if (!isClicked && !layoutIsSolved) {
+					setCursor(Cursor.DEFAULT);
+					text.setOpacity(1);
+				}
+
+			});
 
 			this.setOnMouseClicked(mouseClick -> {
 				if (!isClicked && !layoutIsSolved) {
