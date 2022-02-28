@@ -1,5 +1,5 @@
-Target word: BASTARDS, Rounds: 8, Result: PLAYER DEFEAT
-Target word: SUPERNATURAL, Rounds: 13, Result: PLAYER VICTORY
-Target word: SERIES, Rounds: 8, Result: PLAYER DEFEAT
-Target word: SERIES, Rounds: 7, Result: PLAYER DEFEAT
-Target word: SERIES, Rounds: 6, Result: PLAYER DEFEAT
+Target word: TOGETHER, Rounds: 7, Result: PLAYER DEFEAT
+Target word: DISTANT, Rounds: 19, Result: PLAYER VICTORY
+Target word: DISTANT, Rounds: 16, Result: PLAYER DEFEAT
+Target word: DISTANT, Rounds: 15, Result: PLAYER DEFEAT
+Target word: DISTANT, Rounds: 14, Result: PLAYER DEFEAT

@@ -81,6 +81,7 @@ public class LettersLayout extends GridPane {
 
 			this.setOnMouseClicked(mouseClick -> {
 				if (!isClicked && !layoutIsSolved) {
+					text.setOpacity(1);
 					guess.setLetterArrayPos(arrayPos);
 					guess.stringProperty.set(text.getText());
 					isClicked = true;
@@ -91,7 +92,7 @@ public class LettersLayout extends GridPane {
 		}
 
 		protected void redCross() {
-			overlay.setText("X");
+			overlay.setText("/");
 			overlay.setFill(Paint.valueOf("#ff0000"));
 			getChildren().addAll(overlay);
 		}

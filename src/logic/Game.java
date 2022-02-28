@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Scanner;
 
 import ui.Guess;
@@ -26,8 +27,15 @@ public class Game {
 	private int wrongLetters = 0, correctLetters = 0, totalRounds = 0;
 	private Double wordsLength6 = 0.0, wordsLength7_9 = 0.0, wordsLength10plus = 0.0;
 	private boolean playerWin = false, playerDefeat = false;
+	private Dictionary dictionary;
+
+	public Game newGame() {
+		Random rand = new Random();
+		return new Game(dictionary, dictionary.getWords().get(rand.nextInt(dictionary.getWords().size())));
+	}
 
 	public Game(Dictionary dict, String target) {
+		this.dictionary = dict;
 		this.targetWord = target;
 		this.wordsLengths = new HashMap<Integer, ArrayList<String>>();
 		System.out.println("TARGET WORD: '" + target + "'");
