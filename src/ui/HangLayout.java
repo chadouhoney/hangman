@@ -11,15 +11,21 @@ import javafx.scene.layout.Pane;
 
 public class HangLayout extends Pane {
 
-	private GameLayout parent;
 	private ImageView imgView;
 
-	public HangLayout(GameLayout gl) throws IOException {
-		this.parent = gl;
+	public HangLayout() throws IOException {
+		// this.parent = gl;
 		InputStream is = Files.newInputStream(Paths.get("src/resources/images/stage0.png"));
-		Image img = new Image(is, 0.3 * parent.getWidth(), 0.7 * parent.getHeight(), false, false);
+		Image img = new Image(is, 270, 630, false, false);
 		is.close();
 		this.imgView = new ImageView(img);
+
+		// setBorder(new Border(new BorderStroke(Color.BLACK, Color.BLACK, Color.WHITE,
+		// Color.BLACK,
+		// BorderStrokeStyle.SOLID, BorderStrokeStyle.SOLID, BorderStrokeStyle.SOLID,
+		// BorderStrokeStyle.SOLID,
+		// CornerRadii.EMPTY, new BorderWidths(5), Insets.EMPTY)));
+
 		getChildren().addAll(imgView);
 	}
 

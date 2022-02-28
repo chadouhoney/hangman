@@ -1,4 +1,11 @@
 package ui;
 
-public class PossibleSolutionsLayout {
+import javafx.scene.layout.GridPane;
+
+public class PossibleSolutionsLayout extends GridPane {
+
+	public PossibleSolutionsLayout() {
+		super();
+	}
+
 }
