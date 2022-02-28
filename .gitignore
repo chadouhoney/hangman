@@ -1,4 +1,7 @@
-lib/
-out/
+/lib/
+/out/
 *.xcf
 *.jpg
+.gitignore
+
+.idea/*

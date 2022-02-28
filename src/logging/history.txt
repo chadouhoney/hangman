@@ -1,0 +1,5 @@
+Target word: SERIES, Rounds: 8, Result: PLAYER DEFEAT
+Target word: SERIES, Rounds: 7, Result: PLAYER DEFEAT
+Target word: SERIES, Rounds: 6, Result: PLAYER DEFEAT
+Target word: PERILOUSLY, Rounds: 6, Result: PLAYER DEFEAT
+Target word: ENEMIES, Rounds: 6, Result: PLAYER DEFEAT

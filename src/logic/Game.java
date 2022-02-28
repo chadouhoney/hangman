@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import ui.Guess;
+
 public class Game {
 
 	private static HashMap<Character, Double> alphabet = new HashMap<Character, Double>() {
@@ -24,7 +26,6 @@ public class Game {
 	private int wrongLetters = 0, correctLetters = 0, totalRounds = 0;
 	private Double wordsLength6 = 0.0, wordsLength7_9 = 0.0, wordsLength10plus = 0.0;
 	private boolean playerWin = false, playerDefeat = false;
-
 
 	public Game(Dictionary dict, String target) {
 		this.targetWord = target;
@@ -73,16 +74,14 @@ public class Game {
 
 	}
 
-	public void guess(Integer i, Character c) {
+	public boolean guess(Guess move) {
+		int i = move.getForPosition();
+		Character c = move.getStringProperty().charAt(0);
 		totalRounds++;
 		// CORRECT GUESS
 		if (targetWord.charAt(i) == c) {
 			// remove words that do not contain c in index i
-			for (String word : wordsLengths.get(targetWord.length())) {
-				if (Character.valueOf(word.charAt(i)) != c) {
-					wordsLengths.get(targetWord.length()).remove(word);
-				}
-			}
+			wordsLengths.get(targetWord.length()).removeIf(word -> Character.valueOf(word.charAt(i)) != c);
 
 			// award points to player
 			Double letterProb = lettersProbabilities.get(i).get(Character.valueOf(c));
@@ -103,7 +102,7 @@ public class Game {
 				for (String word : wordsLengths.get(targetWord.length())) {
 					m.put(word.charAt(i), m.get(word.charAt(i)) + 1.0);
 				}
-				for (Character cc = 'A'; c <= 'Z'; cc++) {
+				for (Character cc = 'A'; cc <= 'Z'; cc++) {
 					m.put(cc, m.get(cc) * 1.0 / wordsWithLengthEqualToTarget);
 				}
 				System.out.println(m);
@@ -115,18 +114,16 @@ public class Game {
 			if (correctLetters == targetWord.length()) {
 				System.out.println("GGWP");
 				playerWin = true;
+				move.playerWon.set(true);
 				logGame("VICTORY");
 			}
+			return true;
 
 		}
 		// WRONG GUESS
 		else {
 			// remove words that do not contain c in index i
-			for (String word : wordsLengths.get(targetWord.length())) {
-				if (Character.valueOf(word.charAt(i)) == c) {
-					wordsLengths.get(targetWord.length()).remove(word);
-				}
-			}
+			wordsLengths.get(targetWord.length()).removeIf(word -> Character.valueOf(word.charAt(i)) == c);
 			// subtract points from player (points cannot go below zero)
 			playerPoints = Math.max(playerPoints - 15, 0);
 
@@ -137,7 +134,7 @@ public class Game {
 				for (String word : wordsLengths.get(targetWord.length())) {
 					m.put(word.charAt(i), m.get(word.charAt(i)) + 1.0);
 				}
-				for (Character cc = 'A'; c <= 'Z'; cc++) {
+				for (Character cc = 'A'; cc <= 'Z'; cc++) {
 					m.put(cc, m.get(cc) * 1.0 / wordsWithLengthEqualToTarget);
 				}
 				System.out.println(m);
@@ -149,10 +146,12 @@ public class Game {
 			if (wrongLetters >= 6) {
 				System.out.println("YOU LOSE, GIT GUD NOOB");
 				playerDefeat = true;
+				move.playerLost.set(true);
 				logGame("DEFEAT");
 
 			}
 
+			return false;
 		}
 	}
 
