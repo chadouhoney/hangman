@@ -51,31 +51,96 @@ public class Dictionary {
 		return words;
 	}
 	
-	private ArrayList<String> createWordsList(String[] s){
+	private static ArrayList<String> createWordsListAtLeast6Long(String[] s) {
 		ArrayList ret = new ArrayList<>();
 		for(String word : s){
 			// avoid InvalidRangeException and InvalidCountException. Always make sure that when a dictionary is created,
 			// the words will occur once, and will be at least 6 letters long
 			if(word.length() > 5 && !ret.contains(word)){
 				ret.add(word);
-				numOfWordsTotal++;
-				if(word.length()>8){
-					numOfWordsAtLeastNineLong++;
-				}
-				if (word.length() > maxWordLength) {
-					maxWordLength = word.length();
-				}
 			}
 		}
 		return ret;
 	}
 	
-	public static void createDictionaryTxtFile(String[] words, String openLibraryId) {
+	public static void createDictionaryTextFile(String textFileId, String openLibraryId) throws HangmanException {
+		if (openLibraryId.isEmpty()) {
+			throw new HangmanException() {
+				@Override
+				public String getMessage() {
+					return "Text file ID cannot be empty!!!";
+				}
+			};
+		} else if (textFileId.isEmpty()) {
+			throw new HangmanException() {
+				@Override
+				public String getMessage() {
+					return "Open Library ID cannot be empty!!!";
+				}
+			};
+		} else {
+			System.out.println("Trying to find a txt file");
+			File f = new File("src/medialab/hangman_" + textFileId + ".txt");
+			if (f.exists()) {
+				throw new HangmanException() {
+					@Override
+					public String getMessage() {
+						return "A file with this name already exists. Choose a different name.";
+					}
+				};
+			}
 
+			else {
+				JsonObject obj = null;
+				try {
+					obj = getJson(openLibraryId);
+
+					// get the string of the description
+					String description = obj.get("description").asJsonObject().get("value").toString();
+
+					// remove punctuation
+					// https://stackoverflow.com/questions/18830813/how-can-i-remove-punctuation-from-input-text-in-java
+					description = description.replaceAll("\\p{Punct}", "");
+
+					// Turn all letters to capitals
+					description = description.toUpperCase();
+
+					// System.out.println(description);
+					ArrayList<String> words = createWordsListAtLeast6Long(description.split(" "));
+
+					// if (numOfWordsTotal < 20) {
+					// throw new UndersizeException();
+					// }
+					//
+					// if (numOfWordsAtLeastNineLong < 0.2 * numOfWordsTotal) {
+					// throw new UnbalancedException(numOfWordsTotal, numOfWordsAtLeastNineLong);
+					// }
+
+					// save the dict to a new file
+					try {
+						System.out.println("Trying to create the file");
+						f.createNewFile();
+						FileWriter myWriter = new FileWriter(f.getPath());
+						for (String word : words) {
+							System.out.println("Writing word '" + word + "' to ");
+							myWriter.write(word + "\n");
+						}
+						myWriter.close();
+						System.out.println("Successfully wrote to the file.");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+				} catch (IOException e) {
+					throw new URLException();
+				}
+			}
+
+		}
 	}
 
-	public Dictionary(String openLibraryId) throws HangmanException {
-		if (openLibraryId.isEmpty()) {
+	public Dictionary(String textFileId) throws HangmanException, FileNotFoundException {
+		if (textFileId.isEmpty()) {
 			throw new HangmanException() {
 				@Override
 				public String getMessage() {
@@ -86,7 +151,7 @@ public class Dictionary {
 		else {
 			// try to find a txt file with the given id
 			System.out.println("Trying to find a txt file");
-			File f = new File("src/medialab/hangman_" + openLibraryId + ".txt");
+			File f = new File("src/medialab/hangman_" + textFileId + ".txt");
 			if (f.exists()) {
 				System.out.println("found the txt file");
 				// create dictionary using the file
@@ -124,58 +189,14 @@ public class Dictionary {
 					e.printStackTrace();
 				}
 			}
-			// if such a file does not exist, make an api call to fetch the data, save the
-			// dictionary to a txt file and return it.
+
 			else {
-				System.out.println("Didnt find the txt file. Trying to fetch the data from the API");
-				JsonObject obj = null;
-				try {
-					obj = getJson(openLibraryId);
-
-					// get the string of the description
-					String description = obj.get("description").asJsonObject().get("value").toString();
-
-					// remove punctuation
-					// https://stackoverflow.com/questions/18830813/how-can-i-remove-punctuation-from-input-text-in-java
-					description = description.replaceAll("\\p{Punct}", "");
-
-					// Turn all letters to capitals
-					description = description.toUpperCase();
-
-					// System.out.println(description);
-					words = createWordsList(description.split(" "));
-
-					System.out.println("Total words: " + Integer.toString(numOfWordsTotal));
-					System.out.println(
-							"Total words longer than 9 characters: " + Integer.toString(numOfWordsAtLeastNineLong) + "("
-									+ Double.toString(numOfWordsAtLeastNineLong * 1.0 / numOfWordsTotal) + "%)");
-
-					if (numOfWordsTotal < 20) {
-						throw new UndersizeException();
+				throw new FileNotFoundException() {
+					@Override
+					public String getMessage() {
+						return "The file '" + f.getPath() + "' does not exist";
 					}
-
-					if (numOfWordsAtLeastNineLong < 0.2 * numOfWordsTotal) {
-						throw new UnbalancedException(numOfWordsTotal, numOfWordsAtLeastNineLong);
-					}
-
-					// save the dict to a new file
-					try {
-						System.out.println("Trying to create the file");
-						f.createNewFile();
-						FileWriter myWriter = new FileWriter(f.getPath());
-						for (String word : words) {
-							System.out.println("Writing word '" + word + "' to ");
-							myWriter.write(word + "\n");
-						}
-						myWriter.close();
-						System.out.println("Successfully wrote to the file.");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-
-				} catch (IOException e) {
-					throw new URLException();
-				}
+				};
 			}
 		}
 	}

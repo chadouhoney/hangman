@@ -2,12 +2,13 @@ package ui;
 
 import java.util.Random;
 
-import exception.HangmanException;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -16,6 +17,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontSmoothingType;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import logic.Dictionary;
 import logic.Game;
 
@@ -37,19 +40,20 @@ public class MainMenu extends Parent {
 		MenuButton startButton = new MenuButton("START");
 		startButton.setOnMouseClicked(mouseEvent -> {
 			TextInputDialog inputDialog= new TextInputDialog("");
-			inputDialog.setHeaderText("Enter OPEN_LIBRARY_ID");
+			inputDialog.setHeaderText("Enter DICTIPONARY-ID");
 			inputDialog.showAndWait();
 			
-			String openLibraryId = inputDialog.getResult();
+			String dictionaryId = inputDialog.getResult();
 
-			if (openLibraryId != null) {
+			if (dictionaryId != null) {
 				Dictionary d = null;
 				Boolean everythingok = true;
 				try {
-					d = new Dictionary(openLibraryId);
+					d = new Dictionary(dictionaryId);
 					System.out.println(d.getWords());
-				} catch (HangmanException e) {
+				} catch (Exception e) {
 					Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+					alert.show();
 					everythingok = false;
 				}
 
@@ -61,18 +65,59 @@ public class MainMenu extends Parent {
 					root.getChildren().removeAll(this);
 					root.getChildren().addAll(gl);
 				}
-
-				System.out.println("KREMALA FASISTA");
 			}
 		});
-		
+
+		// CREATE BUTTON
+		MenuButton createButton = new MenuButton("CREATE DICTIONARY");
+		createButton.setOnMouseClicked(e -> {
+			final Stage dialog = new Stage();
+			dialog.initModality(Modality.APPLICATION_MODAL);
+			// dialog.initOwner(this.root.sta);
+			VBox dialogVbox = new VBox(10);
+			Label openLibIdLabel = new Label("Open Library Id");
+			Label textNameLabel = new Label("Desired file name");
+
+			TextArea openLibIdTextArea = new TextArea("");
+			openLibIdTextArea.setPrefWidth(100);
+			openLibIdTextArea.setPrefHeight(30);
+
+			TextArea fileIdTextArea = new TextArea("");
+			fileIdTextArea.setPrefWidth(100);
+			fileIdTextArea.setPrefHeight(30);
+
+			Button b = new Button("OK!");
+			b.setOnMouseClicked(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent mouseEvent) {
+					try {
+						// create new dict
+						Dictionary.createDictionaryTextFile(fileIdTextArea.getText().strip(),
+								openLibIdTextArea.getText().strip());
+					} catch (Exception e) {
+						Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+						alert.show();
+					}
+					dialog.close();
+				}
+			});
+			// b.setAlignment(Pos.CENTER);
+			b.setTranslateX(200 - b.getWidth() / 2);
+			dialogVbox.getChildren().addAll(openLibIdLabel, openLibIdTextArea, textNameLabel, fileIdTextArea, b);
+			Scene dialogScene = new Scene(dialogVbox, 400, 200);
+			dialog.setScene(dialogScene);
+			dialog.setResizable(false);
+			dialog.showAndWait();
+
+		});
+
 		// EXIT BUTTON
 		MenuButton exitButton = new MenuButton("EXIT");
 		exitButton.setOnMouseClicked(mouseEvent -> {
 			System.exit(0);
 		});
 		
-		menu.getChildren().addAll(startButton,exitButton);
+		menu.getChildren().addAll(startButton, createButton, exitButton);
 		
 		
 		getChildren().addAll(menu);
