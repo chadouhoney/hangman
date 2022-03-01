@@ -21,8 +21,8 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		StackPane root = new StackPane();
 		root.setPrefSize(width, height);
-		root.setAlignment(Pos.CENTER_LEFT);
-		primaryStage.setTitle("Hangman");
+		root.setAlignment(Pos.CENTER);
+		primaryStage.setTitle("MediaLab Hangman");
 		primaryStage.setResizable(false);
 
 		InputStream is = Files.newInputStream(Paths.get("src/resources/images/chalkboard.jpg"));

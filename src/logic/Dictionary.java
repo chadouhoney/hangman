@@ -80,7 +80,6 @@ public class Dictionary {
 				}
 			};
 		} else {
-			System.out.println("Trying to find a txt file");
 			File f = new File("src/medialab/hangman_" + textFileId + ".txt");
 			if (f.exists()) {
 				throw new HangmanException() {
@@ -119,14 +118,12 @@ public class Dictionary {
 
 					// save the dict to a new file
 					try {
-						System.out.println("Trying to create the file");
 						f.createNewFile();
 						FileWriter myWriter = new FileWriter(f.getPath());
 						for (String word : words) {
 							myWriter.write(word + "\n");
 						}
 						myWriter.close();
-						System.out.println("Successfully wrote to the file.");
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -152,10 +149,8 @@ public class Dictionary {
 			numOfWordsTotal = 0;
 			numOfWordsAtLeastNineLong = 0;
 			maxWordLength = 0;
-			System.out.println("Trying to find a txt file");
 			File f = new File("src/medialab/hangman_" + textFileId + ".txt");
 			if (f.exists()) {
-				System.out.println("found the txt file");
 				// create dictionary using the file
 				try {
 					words = new ArrayList<>();
@@ -167,7 +162,6 @@ public class Dictionary {
 						}
 						if (word.length() > 5 && !words.contains(word)) {
 							words.add(word);
-							System.out.println("added " + word);
 							numOfWordsTotal++;
 							if (word.length() > 8) {
 								numOfWordsAtLeastNineLong++;
@@ -184,7 +178,6 @@ public class Dictionary {
 						throw new UndersizeException();
 					}
 
-					System.out.println("added " + numOfWordsTotal + "words");
 					if (numOfWordsAtLeastNineLong < (0.2 * numOfWordsTotal)) {
 						throw new UnbalancedException(numOfWordsTotal, numOfWordsAtLeastNineLong);
 					}

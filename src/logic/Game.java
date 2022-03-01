@@ -130,12 +130,12 @@ public class Game {
 				move.setPlayerWin(true);
 				logGame("VICTORY");
 			}
-			System.out.println("CORRECT GUESS");
-			System.out.println("Player points: " + Integer.toString(playerPoints));
-			System.out.println("Candidate words after recalculating:");
-			System.out.println(wordsLengths.get(targetWord.length()));
-			System.out.println("Probabilities after recalculating:");
-			System.out.println(lettersProbabilities);
+			// System.out.println("CORRECT GUESS");
+			// System.out.println("Player points: " + Integer.toString(playerPoints));
+			// System.out.println("Candidate words after recalculating:");
+			// System.out.println(wordsLengths.get(targetWord.length()));
+			// System.out.println("Probabilities after recalculating:");
+			// System.out.println(lettersProbabilities);
 			return true;
 		}
 		// WRONG GUESS
@@ -170,12 +170,12 @@ public class Game {
 
 			}
 
-			System.out.println("WRONG GUESS");
-			System.out.println("Player points: " + Integer.toString(playerPoints));
-			System.out.println("Candidate words after recalculating:");
-			System.out.println(wordsLengths.get(targetWord.length()));
-			System.out.println("Probabilities after recalculating:");
-			System.out.println(lettersProbabilities);
+			// System.out.println("WRONG GUESS");
+			// System.out.println("Player points: " + Integer.toString(playerPoints));
+			// System.out.println("Candidate words after recalculating:");
+			// System.out.println(wordsLengths.get(targetWord.length()));
+			// System.out.println("Probabilities after recalculating:");
+			// System.out.println(lettersProbabilities);
 
 			return false;
 		}
@@ -221,7 +221,7 @@ public class Game {
 	}
 
 	public HashMap<Integer, HashMap<Character, Double>> getLettersProbabilities() {
-		System.out.println(wordsLengths);
+		// System.out.println(wordsLengths);
 		return lettersProbabilities;
 	}
 }

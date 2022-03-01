@@ -32,10 +32,17 @@ public class MainMenu extends Parent {
 		this.width = root.getPrefWidth();
 		this.height = root.getPrefHeight();
 
-		VBox menu = new VBox(50);
+		VBox menu = new VBox(40);
 		menu.setTranslateX(0.7 * width);
 		menu.setTranslateY(height / 2);
 		menu.setAlignment(Pos.CENTER);
+
+		// TITLE
+		Text title = new Text("HANGMAN");
+		title.setFont(Font.loadFont("file:src/resources/fonts/CrayonCrumble.ttf", 90));
+		title.setUnderline(true);
+		title.setUnderline(true);
+		title.setFill(Paint.valueOf("#e0dbd1"));
 
 		// START BUTTON
 		MenuButton startButton = new MenuButton("START");
@@ -121,7 +128,7 @@ public class MainMenu extends Parent {
 		});
 
 		
-		menu.getChildren().addAll(startButton, createButton, exitButton);
+		menu.getChildren().addAll(title, startButton, createButton, exitButton);
 		
 		getChildren().addAll(menu);
 	}
@@ -130,8 +137,9 @@ public class MainMenu extends Parent {
 		private Text text;
 
 		public MenuButton(String s) {
+
 			text = new Text(s);
-			Font font = Font.loadFont("file:src/resources/fonts/CrayonCrumble.ttf", 70);
+			Font font = Font.loadFont("file:src/resources/fonts/CrayonCrumble.ttf", 50);
 			text.setFont(font);
 			text.setFill(Paint.valueOf("#e0dbd1"));
 			text.setTextAlignment(TextAlignment.CENTER);
