@@ -20,7 +20,6 @@ public class HangLayout extends Pane {
 		is.close();
 		this.imgView = new ImageView(img);
 
-
 		getChildren().addAll(imgView);
 	}
 
