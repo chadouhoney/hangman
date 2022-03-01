@@ -1,9 +1,6 @@
 package ui;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -13,6 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.Pair;
 
 public class LettersLayout extends GridPane {
 
@@ -49,15 +47,45 @@ public class LettersLayout extends GridPane {
 	}
 
 	public void updateProbabilities(HashMap<Character, Double> probs) {
+		// (C, d) -> Letter C has probability d to be correct
 		List<Map.Entry<Character, Double>> list = new ArrayList<>(probs.entrySet());
+		// Sorting. Most likely letter at list[25]
 		list.sort(Map.Entry.comparingByValue());
-		List<Map.Entry<Character, Double>> currentList = new ArrayList<>(currentProbs.entrySet());
-		currentList.sort(Map.Entry.comparingByValue());
+
+		List<Pair<Double, Pair<Integer, Integer>>> probIndex = new ArrayList<>();
+		getChildren().removeAll(letters);
+		// (x, (i,j))
+		// x -> prob
+		// i -> new index
+		// j -> old index
+		// Finding the position of letter C at letters
 		for (int i = 0; i < 26; i++) {
-			if (!(list.get(i).getKey() == currentList.get(i).getKey())) {
-				// currentLis
+			for (int j = 0; j < 26; j++) {
+				if (list.get(i).getKey().toString().equals(letters[j].letter.getText())) {
+					System.out.println("Letter " + letters[j].letter.getText() + " was at " + j + " with probability "
+							+ letters[j].probability.getText() + " and now should be in " + i);
+					probIndex.add(new Pair<>(list.get(i).getValue(), new Pair<>(i, j)));
+					letters[j].probability.setText(String.format("%1.2f", list.get(i).getValue()));
+					break;
+				}
 			}
 		}
+		probIndex.sort(Comparator.comparingDouble(Pair::getKey));
+		LetterButton[] newLetters = new LetterButton[26];
+		for (int i = 0; i < 26; i++) {
+			// Breaking down probIndex
+			int oldIndex = probIndex.get(i).getValue().getValue();
+			int newIndex = probIndex.get(i).getValue().getKey();
+			newLetters[newIndex] = letters[oldIndex];
+			newLetters[newIndex].arrayPos = newIndex;
+			letters[oldIndex] = null;
+		}
+
+		for (int i = 25; i >= 0; i--) {
+			this.add(newLetters[i], (25 - i) % 13, (25 - i) / 13);
+		}
+
+		letters = newLetters;
 	}
 
 	protected class LetterButton extends StackPane {
@@ -67,17 +95,18 @@ public class LettersLayout extends GridPane {
 		private VBox letterAndProbability;
 		private Text overlay;
 		private Text probability;
+		private Text letter;
 
 		public LetterButton(Character s, int pos, Double p) {
 
 			this.arrayPos = pos;
 			letterAndProbability = new VBox(1);
 			letterAndProbability.setAlignment(Pos.CENTER);
-			Text letter = new Text(s.toString());
+			letter = new Text(s.toString());
 			letter.setFont(Font.loadFont("file:src/resources/fonts/CrayonCrumble.ttf", 50));
 			letter.setFill(Paint.valueOf("#e0dbd1"));
 
-			Text probability = new Text(String.format("%1.2f", p));
+			probability = new Text(String.format("%1.2f", p));
 			probability.setFont(Font.loadFont("file:src/resources/fonts/CrayonCrumble.ttf", 15));
 			probability.setFill(Paint.valueOf("#e0dbd1"));
 
@@ -126,5 +155,9 @@ public class LettersLayout extends GridPane {
 			getChildren().addAll(overlay);
 		}
 
+		@Override
+		public String toString() {
+			return "LetterButton{" + "probability=" + probability.getText() + ", letter=" + letter.getText() + '}';
+		}
 	}
 }
