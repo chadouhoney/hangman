@@ -92,23 +92,9 @@ public class GameLayout extends HBox {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			lettersLayout[currentLetterLayout]
+					.updateProbabilities(this.game.getLettersProbabilities().get(currentLetterLayout));
 		});
-
-		// this.guess.playerWon.addListener(t -> {
-		// try {
-		// showGameOver("GGWP");
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
-		// });
-		//
-		// this.guess.playerLost.addListener(t -> {
-		// try {
-		// showGameOver("YOU LOSE, GIT GUD NOOB");
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
-		// });
 	}
 
 	private void fillWantedLettersArray(Game game) {
@@ -138,6 +124,7 @@ public class GameLayout extends HBox {
 	private void setActiveLetterLayout(int layout) {
 		System.out.println("Changing from " + currentLetterLayout + " to " + layout);
 		mainVBox.getChildren().removeAll(lettersLayout[currentLetterLayout]);
+		lettersLayout[layout].updateProbabilities(this.game.getLettersProbabilities().get(layout));
 		mainVBox.getChildren().add(3, lettersLayout[layout]);
 		guess.setForPosition(layout);
 
