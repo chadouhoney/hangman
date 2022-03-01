@@ -34,6 +34,7 @@ public class Dictionary {
 
 	private int maxWordLength = 0;
 	
+
 	private static JsonObject getJson(String openLibraryId) throws IOException {
 		URL url = new URL("https://openlibrary.org/works/"+openLibraryId+".json");
 		

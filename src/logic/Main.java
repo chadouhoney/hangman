@@ -15,7 +15,7 @@ import ui.MainMenu;
 
 public class Main extends Application {
 
-	private final int height = 600, width = 1000;
+	private final int height = 600, width = 1200;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {

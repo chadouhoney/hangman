@@ -97,6 +97,7 @@ public class MainMenu extends Parent {
 								openLibIdTextArea.getText().strip());
 					} catch (Exception e) {
 						Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+						e.printStackTrace();
 						alert.show();
 					}
 					dialog.close();
