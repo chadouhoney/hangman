@@ -120,6 +120,7 @@ public class Game {
 				System.out.println("GGWP");
 				playerWin = true;
 				move.playerWon.set(true);
+				move.setPlayerWin(true);
 				logGame("VICTORY");
 			}
 			return true;
@@ -151,6 +152,7 @@ public class Game {
 				System.out.println("YOU LOSE, GIT GUD NOOB");
 				playerDefeat = true;
 				move.playerLost.set(true);
+				move.setPlayerLose(true);
 				logGame("DEFEAT");
 
 			}

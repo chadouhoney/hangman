@@ -19,6 +19,7 @@ public class LettersLayout extends GridPane {
 	private LetterButton[] letters;
 	private Guess guess;
 	private boolean layoutIsSolved;
+	private HashMap<Character, Double> currentProbs;
 
 	public LettersLayout(HashMap<Character, Double> probs, Guess g) {
 		super();
@@ -47,6 +48,17 @@ public class LettersLayout extends GridPane {
 		letters[guess.getLetterArrayPos()].greenTick();
 	}
 
+	public void updateProbabilities(HashMap<Character, Double> probs) {
+		List<Map.Entry<Character, Double>> list = new ArrayList<>(probs.entrySet());
+		list.sort(Map.Entry.comparingByValue());
+		List<Map.Entry<Character, Double>> currentList = new ArrayList<>(currentProbs.entrySet());
+		currentList.sort(Map.Entry.comparingByValue());
+		for (int i = 0; i < 26; i++) {
+			if (!(list.get(i).getKey() == currentList.get(i).getKey())) {
+				// currentLis
+			}
+		}
+	}
 
 	protected class LetterButton extends StackPane {
 
@@ -80,7 +92,6 @@ public class LettersLayout extends GridPane {
 					setCursor(Cursor.HAND);
 					letter.setOpacity(0.5);
 				}
-
 			});
 
 			this.setOnMouseExited(e -> {
@@ -88,7 +99,6 @@ public class LettersLayout extends GridPane {
 					setCursor(Cursor.DEFAULT);
 					letter.setOpacity(1);
 				}
-
 			});
 
 			this.setOnMouseClicked(mouseClick -> {
@@ -96,6 +106,7 @@ public class LettersLayout extends GridPane {
 					letter.setOpacity(1);
 					guess.setLetterArrayPos(arrayPos);
 					guess.stringProperty.set(letter.getText());
+					System.out.println("Pressed " + letter.getText() + " for Position " + guess.getForPosition());
 					isClicked = true;
 				}
 			});

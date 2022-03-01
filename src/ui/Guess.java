@@ -6,12 +6,16 @@ import javafx.beans.property.SimpleStringProperty;
 public class Guess {
 	private int forPosition;
 	private int letterArrayPos;
+	private boolean playerWin;
+	private boolean playerLose;
 	public SimpleStringProperty stringProperty;
 	public SimpleBooleanProperty playerWon;
 	public SimpleBooleanProperty playerLost;
 
 	public Guess() {
 		stringProperty = new SimpleStringProperty();
+		playerLose = false;
+		playerWin = false;
 		playerWon = new SimpleBooleanProperty(false);
 		playerLost = new SimpleBooleanProperty(false);
 	}
@@ -34,5 +38,21 @@ public class Guess {
 
 	public void setLetterArrayPos(int letterArrayPos) {
 		this.letterArrayPos = letterArrayPos;
+	}
+
+	public boolean isPlayerWin() {
+		return playerWin;
+	}
+
+	public void setPlayerWin(boolean playerWin) {
+		this.playerWin = playerWin;
+	}
+
+	public boolean isPlayerLose() {
+		return playerLose;
+	}
+
+	public void setPlayerLose(boolean playerLose) {
+		this.playerLose = playerLose;
 	}
 }
