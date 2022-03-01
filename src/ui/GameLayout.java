@@ -67,7 +67,7 @@ public class GameLayout extends HBox {
 
 	private void putLetterOnHang() {
 		wantedLetterLayout[guess.getForPosition()].setLetterString(guess.getStringProperty());
-		wantedLetterLayout[guess.getForPosition()].setLetterColor("#ffffff");
+		wantedLetterLayout[guess.getForPosition()].setLetterColor("#e0dbd1");
 	}
 
 	private void initializeGuess() {
@@ -117,7 +117,8 @@ public class GameLayout extends HBox {
 			wantedLetterLayout[i] = new WantedLetterLayout();
 			int finalI = i;
 			wantedLetterLayout[i].setOnMouseClicked(mouseEvent -> {
-				if (wantedLetterLayout[finalI].getLetterString().equals("?")) {
+				if (wantedLetterLayout[finalI].getLetterString().equals("?")
+						&& !wantedLetterLayout[finalI].isSelected()) {
 					setActiveLetterLayout(finalI);
 					wantedLetterLayout[finalI].setSelected(true);
 				}
@@ -140,7 +141,10 @@ public class GameLayout extends HBox {
 		mainVBox.getChildren().add(3, lettersLayout[layout]);
 		guess.setForPosition(layout);
 
-		((WantedLetterLayout) wantedLetterHBox.getChildren().get(currentLetterLayout)).setLetterColor("#ffffff");
+		if (((WantedLetterLayout) wantedLetterHBox.getChildren().get(currentLetterLayout)).getLetterString()
+				.equals("?")) {
+			((WantedLetterLayout) wantedLetterHBox.getChildren().get(currentLetterLayout)).setLetterColor("#000000");
+		}
 		((WantedLetterLayout) wantedLetterHBox.getChildren().get(currentLetterLayout)).setSelected(false);
 		((WantedLetterLayout) wantedLetterHBox.getChildren().get(currentLetterLayout)).setOpacity(1.0);
 
@@ -206,12 +210,11 @@ public class GameLayout extends HBox {
 
 	private void playAgain() {
 		this.game = this.game.newGame();
-		currentLetterLayout = 0;
 		phase = 0;
 		mainVBox.getChildren().removeAll(lettersLayout[currentLetterLayout]);
 		wantedLetterHBox.getChildren().removeAll(wantedLetterLayout);
 		mainVBox.getChildren().removeAll(wantedLetterHBox);
-
+		currentLetterLayout = 0;
 		initializeGuess();
 		fillWantedLettersArray(this.game);
 		createLettersLayouts(this.game, this.guess);

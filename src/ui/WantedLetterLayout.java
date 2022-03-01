@@ -31,13 +31,9 @@ public class WantedLetterLayout extends StackPane {
 		this.setOnMouseEntered(e -> {
 			if (!isSelected && letter.getText().equals("?")) {
 				setCursor(Cursor.HAND);
-				// setBorder(new Border(new BorderStroke(Color.DARKRED, BorderStrokeStyle.SOLID,
-				// new CornerRadii(5),
-				// BorderWidths.DEFAULT)));
 				setLetterColor("#e0dbd1");
 				setOpacity(0.5);
 			}
-			// setBlendMode(BlendMode.DARKEN);
 		});
 
 		this.setOnMouseExited(e -> {
@@ -45,11 +41,9 @@ public class WantedLetterLayout extends StackPane {
 
 			if (!isSelected && letter.getText().equals("?")) {
 				setCursor(Cursor.DEFAULT);
-				// setBorder(Border.EMPTY);
 				setLetterColor("#000000");
 				setOpacity(1.0);
 			}
-			// setBlendMode(null);
 		});
 
 		getChildren().addAll(letter, underline);
