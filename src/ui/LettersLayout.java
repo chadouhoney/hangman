@@ -47,6 +47,7 @@ public class LettersLayout extends GridPane {
 	}
 
 	public void updateProbabilities(HashMap<Character, Double> probs) {
+		System.out.println(probs);
 		// (C, d) -> Letter C has probability d to be correct
 		List<Map.Entry<Character, Double>> list = new ArrayList<>(probs.entrySet());
 		// Sorting. Most likely letter at list[25]
@@ -62,8 +63,6 @@ public class LettersLayout extends GridPane {
 		for (int i = 0; i < 26; i++) {
 			for (int j = 0; j < 26; j++) {
 				if (list.get(i).getKey().toString().equals(letters[j].letter.getText())) {
-					System.out.println("Letter " + letters[j].letter.getText() + " was at " + j + " with probability "
-							+ letters[j].probability.getText() + " and now should be in " + i);
 					probIndex.add(new Pair<>(list.get(i).getValue(), new Pair<>(i, j)));
 					letters[j].probability.setText(String.format("%1.2f", list.get(i).getValue()));
 					break;

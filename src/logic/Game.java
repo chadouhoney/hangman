@@ -106,12 +106,12 @@ public class Game {
 			for (int j = 0; j < targetWord.length(); j++) {
 				HashMap<Character, Double> m = (HashMap<Character, Double>) alphabet.clone();
 				for (String word : wordsLengths.get(targetWord.length())) {
-					m.put(word.charAt(i), m.get(word.charAt(i)) + 1.0);
+					m.put(word.charAt(j), m.get(word.charAt(j)) + 1.0);
 				}
 				for (Character cc = 'A'; cc <= 'Z'; cc++) {
 					m.put(cc, m.get(cc) * 1.0 / wordsWithLengthEqualToTarget);
 				}
-				lettersProbabilities.replace(i, m);
+				lettersProbabilities.replace(j, m);
 			}
 
 			// check for victory
@@ -124,7 +124,6 @@ public class Game {
 				logGame("VICTORY");
 			}
 			return true;
-
 		}
 		// WRONG GUESS
 		else {
@@ -138,12 +137,12 @@ public class Game {
 			for (int j = 0; j < targetWord.length(); j++) {
 				HashMap<Character, Double> m = (HashMap<Character, Double>) alphabet.clone();
 				for (String word : wordsLengths.get(targetWord.length())) {
-					m.put(word.charAt(i), m.get(word.charAt(i)) + 1.0);
+					m.put(word.charAt(j), m.get(word.charAt(j)) + 1.0);
 				}
 				for (Character cc = 'A'; cc <= 'Z'; cc++) {
 					m.put(cc, m.get(cc) * 1.0 / wordsWithLengthEqualToTarget);
 				}
-				lettersProbabilities.replace(i, m);
+				lettersProbabilities.replace(j, m);
 			}
 
 			// increase wrong attempts and check for defeat
@@ -156,7 +155,6 @@ public class Game {
 				logGame("DEFEAT");
 
 			}
-
 			return false;
 		}
 	}
@@ -201,6 +199,7 @@ public class Game {
 	}
 
 	public HashMap<Integer, HashMap<Character, Double>> getLettersProbabilities() {
+		System.out.println(wordsLengths);
 		return lettersProbabilities;
 	}
 }
