@@ -54,6 +54,7 @@ public class MainMenu extends Parent {
 					d = new Dictionary(dictionaryId);
 				} catch (Exception e) {
 					Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+					alert.setHeight(300);
 					alert.show();
 					everythingok = false;
 				}
@@ -97,7 +98,6 @@ public class MainMenu extends Parent {
 								openLibIdTextArea.getText().strip());
 					} catch (Exception e) {
 						Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
-						e.printStackTrace();
 						alert.show();
 					}
 					dialog.close();

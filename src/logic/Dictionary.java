@@ -17,8 +17,8 @@ import jakarta.json.JsonReader;
 
 public class Dictionary {
 	private ArrayList<String> words;
-	private int numOfWordsTotal=0;
-	private int numOfWordsAtLeastNineLong=0;
+	private int numOfWordsTotal;
+	private int numOfWordsAtLeastNineLong;
 
 	public int getNumOfWordsTotal() {
 		return numOfWordsTotal;
@@ -32,7 +32,7 @@ public class Dictionary {
 		return maxWordLength;
 	}
 
-	private int maxWordLength = 0;
+	private int maxWordLength;
 	
 
 	private static JsonObject getJson(String openLibraryId) throws IOException {
@@ -149,6 +149,9 @@ public class Dictionary {
 		}
 		else {
 			// try to find a txt file with the given id
+			numOfWordsTotal = 0;
+			numOfWordsAtLeastNineLong = 0;
+			maxWordLength = 0;
 			System.out.println("Trying to find a txt file");
 			File f = new File("src/medialab/hangman_" + textFileId + ".txt");
 			if (f.exists()) {
@@ -164,6 +167,7 @@ public class Dictionary {
 						}
 						if (word.length() > 5 && !words.contains(word)) {
 							words.add(word);
+							System.out.println("added " + word);
 							numOfWordsTotal++;
 							if (word.length() > 8) {
 								numOfWordsAtLeastNineLong++;
@@ -180,7 +184,8 @@ public class Dictionary {
 						throw new UndersizeException();
 					}
 
-					if (numOfWordsAtLeastNineLong < 0.2 * numOfWordsTotal) {
+					System.out.println("added " + numOfWordsTotal + "words");
+					if (numOfWordsAtLeastNineLong < (0.2 * numOfWordsTotal)) {
 						throw new UnbalancedException(numOfWordsTotal, numOfWordsAtLeastNineLong);
 					}
 
