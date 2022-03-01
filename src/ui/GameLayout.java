@@ -215,6 +215,7 @@ public class GameLayout extends HBox {
 		wantedLetterHBox.getChildren().removeAll(wantedLetterLayout);
 		mainVBox.getChildren().removeAll(wantedLetterHBox);
 		currentLetterLayout = 0;
+
 		initializeGuess();
 		fillWantedLettersArray(this.game);
 		createLettersLayouts(this.game, this.guess);
@@ -223,6 +224,7 @@ public class GameLayout extends HBox {
 		mainVBox.getChildren().add(3, lettersLayout[0]);
 		try {
 			hangLayout.updateHang(phase);
+			phase = 1;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
