@@ -58,7 +58,6 @@ public class LettersLayout extends GridPane {
 
 		public LetterButton(Character s, int pos, Double p) {
 
-			System.out.println("P=" + p.toString());
 			this.arrayPos = pos;
 			letterAndProbability = new VBox(1);
 			letterAndProbability.setAlignment(Pos.CENTER);

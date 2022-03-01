@@ -38,6 +38,7 @@ public class GameLayout extends HBox {
 				if (res) {
 					greenTickOnLetter();
 					wantedLetterLayout[guess.getForPosition()].setLetterString(guess.getStringProperty());
+					wantedLetterLayout[guess.getForPosition()].setLetterColor("#000000");
 				} else {
 					try {
 						redCrossOnLetter();
@@ -72,7 +73,7 @@ public class GameLayout extends HBox {
 			// Wanted Letters
 			wantedLetterLayout = new WantedLetterLayout[g.getTargetWord().length()];
 			fillWantedLettersArray(g.getTargetWord());
-			wantedLetterHBox = new HBox(20);
+			wantedLetterHBox = new HBox(40);
 			wantedLetterHBox.getChildren().addAll(wantedLetterLayout);
 
 			Region r1 = new Region();
@@ -99,9 +100,14 @@ public class GameLayout extends HBox {
 			wantedLetterLayout[i] = new WantedLetterLayout();
 			int finalI = i;
 			wantedLetterLayout[i].setOnMouseClicked(mouseEvent -> {
-				setActiveLetterLayout(finalI);
+				if (wantedLetterLayout[finalI].getLetterString().equals("?")) {
+					setActiveLetterLayout(finalI);
+					wantedLetterLayout[finalI].setSelected(true);
+				}
 			});
 		}
+		wantedLetterLayout[0].setSelected(true);
+		wantedLetterLayout[0].setLetterColor("#e0dbd1");
 	}
 
 	private void createLettersLayouts(HashMap<Integer, HashMap<Character, Double>> hashMap, Guess guess) {
@@ -114,7 +120,15 @@ public class GameLayout extends HBox {
 		mainVBox.getChildren().removeAll(lettersLayout[currentLetterLayout]);
 		mainVBox.getChildren().add(3, lettersLayout[layout]);
 		guess.setForPosition(layout);
+
+		((WantedLetterLayout) wantedLetterHBox.getChildren().get(currentLetterLayout)).setLetterColor("#000000");
+		((WantedLetterLayout) wantedLetterHBox.getChildren().get(currentLetterLayout)).setSelected(false);
+		((WantedLetterLayout) wantedLetterHBox.getChildren().get(currentLetterLayout)).setOpacity(1.0);
+
 		currentLetterLayout = layout;
+		((WantedLetterLayout) wantedLetterHBox.getChildren().get(currentLetterLayout)).setLetterColor("#e0dbd1");
+		((WantedLetterLayout) wantedLetterHBox.getChildren().get(currentLetterLayout)).setSelected(true);
+		((WantedLetterLayout) wantedLetterHBox.getChildren().get(currentLetterLayout)).setOpacity(1.0);
 	}
 
 	private void redCrossOnLetter() {

@@ -52,7 +52,6 @@ public class MainMenu extends Parent {
 				Boolean everythingok = true;
 				try {
 					d = new Dictionary(dictionaryId);
-					System.out.println(d.getWords());
 				} catch (Exception e) {
 					Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
 					alert.show();
@@ -67,8 +66,6 @@ public class MainMenu extends Parent {
 					root.getChildren().removeAll(MainMenu.this);
 					root.getChildren().addAll(gl);
 				}
-				System.out.println("KREMALA FASISTA");
-
 			}
 		});
 

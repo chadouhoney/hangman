@@ -75,10 +75,8 @@ public class Game {
 			for (Character c = 'A'; c <= 'Z'; c++) {
 				m.put(c, m.get(c) * 1.0 / wordsWithLengthEqualToTarget);
 			}
-			System.out.println(m);
 			lettersProbabilities.put(i, m);
 		}
-		System.out.println(lettersProbabilities);
 
 	}
 
@@ -113,7 +111,6 @@ public class Game {
 				for (Character cc = 'A'; cc <= 'Z'; cc++) {
 					m.put(cc, m.get(cc) * 1.0 / wordsWithLengthEqualToTarget);
 				}
-				System.out.println(m);
 				lettersProbabilities.replace(i, m);
 			}
 
@@ -145,7 +142,6 @@ public class Game {
 				for (Character cc = 'A'; cc <= 'Z'; cc++) {
 					m.put(cc, m.get(cc) * 1.0 / wordsWithLengthEqualToTarget);
 				}
-				System.out.println(m);
 				lettersProbabilities.replace(i, m);
 			}
 

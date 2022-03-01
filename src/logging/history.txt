@@ -1,5 +1,5 @@
-Target word: ENEMIES, Rounds: 10, Result: PLAYER DEFEAT
-Target word: ENEMIES, Rounds: 8, Result: PLAYER DEFEAT
-Target word: ENEMIES, Rounds: 7, Result: PLAYER DEFEAT
-Target word: ENEMIES, Rounds: 6, Result: PLAYER DEFEAT
-Target word: SWEEPING, Rounds: 11, Result: PLAYER DEFEAT
+Target word: SINISTER, Rounds: 13, Result: PLAYER VICTORY
+Target word: GENUINE, Rounds: 9, Result: PLAYER DEFEAT
+Target word: RETURNING, Rounds: 12, Result: PLAYER VICTORY
+Target word: ASSASSINS, Rounds: 37, Result: PLAYER DEFEAT
+Target word: ASSASSINS, Rounds: 36, Result: PLAYER DEFEAT
