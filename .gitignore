@@ -1,7 +1,10 @@
-/lib/
-/out/
+lib/
+out/
 *.xcf
 *.jpg
+*.txt
 .gitignore
+*.iml
+*.class
 
 .idea/*

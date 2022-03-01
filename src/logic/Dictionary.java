@@ -99,23 +99,23 @@ public class Dictionary {
 					// get the string of the description
 					String description = obj.get("description").asJsonObject().get("value").toString();
 
+					// get rid of "--back cover" string at end of description
+					description = description.replace("--back cover", "");
+
+					// remove line break characters
+					description = description.replace("\\n", "").replace("\\r", "");
+
 					// remove punctuation
 					// https://stackoverflow.com/questions/18830813/how-can-i-remove-punctuation-from-input-text-in-java
 					description = description.replaceAll("\\p{Punct}", "");
 
+
 					// Turn all letters to capitals
 					description = description.toUpperCase();
 
-					// System.out.println(description);
+					// words to be added to dictionary will be at least 6 letters long
 					ArrayList<String> words = createWordsListAtLeast6Long(description.split(" "));
 
-					// if (numOfWordsTotal < 20) {
-					// throw new UndersizeException();
-					// }
-					//
-					// if (numOfWordsAtLeastNineLong < 0.2 * numOfWordsTotal) {
-					// throw new UnbalancedException(numOfWordsTotal, numOfWordsAtLeastNineLong);
-					// }
 
 					// save the dict to a new file
 					try {
@@ -123,7 +123,6 @@ public class Dictionary {
 						f.createNewFile();
 						FileWriter myWriter = new FileWriter(f.getPath());
 						for (String word : words) {
-							System.out.println("Writing word '" + word + "' to ");
 							myWriter.write(word + "\n");
 						}
 						myWriter.close();
@@ -136,7 +135,6 @@ public class Dictionary {
 					throw new URLException();
 				}
 			}
-
 		}
 	}
 
