@@ -74,26 +74,28 @@ public class GameLayout extends HBox {
 		this.guess = new Guess();
 		this.guess.setForPosition(0);
 		this.guess.stringProperty.addListener(t -> {
-			boolean res = this.game.guess(this.guess);
-			if (res) {
-				greenTickOnLetter();
-				putLetterOnHang();
+			if (!this.guess.stringProperty.get().equals("")) {
+				boolean res = this.game.guess(this.guess);
+				if (res) {
+					greenTickOnLetter();
+					putLetterOnHang();
 
-			} else {
+				} else {
+					try {
+						redCrossOnLetter();
+						hangLayout.updateHang(phase++);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
 				try {
-					redCrossOnLetter();
-					hangLayout.updateHang(phase++);
+					checkEndgame();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				lettersLayout[currentLetterLayout]
+						.updateProbabilities(this.game.getLettersProbabilities().get(currentLetterLayout));
 			}
-			try {
-				checkEndgame();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			lettersLayout[currentLetterLayout]
-					.updateProbabilities(this.game.getLettersProbabilities().get(currentLetterLayout));
 		});
 	}
 

@@ -133,7 +133,12 @@ public class LettersLayout extends GridPane {
 				if (!isClicked && !layoutIsSolved) {
 					letter.setOpacity(1);
 					guess.setLetterArrayPos(arrayPos);
+
+					if (letter.getText().equals(guess.stringProperty.get())) {
+						guess.stringProperty.set("");
+					}
 					guess.stringProperty.set(letter.getText());
+
 					System.out.println("Pressed " + letter.getText() + " for Position " + guess.getForPosition());
 					isClicked = true;
 				}

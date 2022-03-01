@@ -42,7 +42,7 @@ public class MainMenu extends Parent {
 
 		startButton.setOnMouseClicked(mouseEvent -> {
 			TextInputDialog inputDialog= new TextInputDialog("");
-			inputDialog.setHeaderText("Enter DICTIPONARY-ID");
+			inputDialog.setHeaderText("Enter DICTIONARY-ID");
 			inputDialog.showAndWait();
 			
 			String dictionaryId = inputDialog.getResult();
