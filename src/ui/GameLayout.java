@@ -24,6 +24,7 @@ public class GameLayout extends HBox {
 	private WantedLetterLayout[] wantedLetterLayout;
 	private HBox wantedLetterHBox;
 	private VBox mainVBox;
+	private StatsLayout statsLayout;
 	// For Layout Communication
 	private Guess guess;
 	// Different variables
@@ -46,14 +47,19 @@ public class GameLayout extends HBox {
 			wantedLetterHBox = new HBox(40);
 			wantedLetterHBox.getChildren().addAll(wantedLetterLayout);
 
+			// Stats
+			statsLayout = new StatsLayout(0, game.getWordsLengths().get(game.getTargetWord().length()).size(), 0.0);
+
+			Region r0 = new Region();
 			Region r1 = new Region();
 			Region r2 = new Region();
 			Region r3 = new Region();
 			mainVBox = new VBox();
+			VBox.setVgrow(r0, Priority.ALWAYS);
 			VBox.setVgrow(r1, Priority.ALWAYS);
 			VBox.setVgrow(r2, Priority.ALWAYS);
 			VBox.setVgrow(r3, Priority.ALWAYS);
-			mainVBox.getChildren().addAll(r1, wantedLetterHBox, r2, lettersLayout[0], r3);
+			mainVBox.getChildren().addAll(r0, statsLayout, r1, wantedLetterHBox, r2, lettersLayout[0], r3);
 			currentLetterLayout = 0;
 			//
 			//
@@ -88,6 +94,9 @@ public class GameLayout extends HBox {
 						e.printStackTrace();
 					}
 				}
+				statsLayout.updateFields(game.getPlayerPoints(),
+						game.getWordsLengths().get(game.getTargetWord().length()).size(),
+						game.getSussessfulPercentage());
 				try {
 					checkEndgame();
 				} catch (IOException e) {
@@ -127,7 +136,7 @@ public class GameLayout extends HBox {
 		System.out.println("Changing from " + currentLetterLayout + " to " + layout);
 		mainVBox.getChildren().removeAll(lettersLayout[currentLetterLayout]);
 		lettersLayout[layout].updateProbabilities(this.game.getLettersProbabilities().get(layout));
-		mainVBox.getChildren().add(3, lettersLayout[layout]);
+		mainVBox.getChildren().add(5, lettersLayout[layout]);
 		guess.setForPosition(layout);
 
 		if (((WantedLetterLayout) wantedLetterHBox.getChildren().get(currentLetterLayout)).getLetterString()
@@ -203,14 +212,17 @@ public class GameLayout extends HBox {
 		mainVBox.getChildren().removeAll(lettersLayout[currentLetterLayout]);
 		wantedLetterHBox.getChildren().removeAll(wantedLetterLayout);
 		mainVBox.getChildren().removeAll(wantedLetterHBox);
+		mainVBox.getChildren().removeAll(statsLayout);
 		currentLetterLayout = 0;
 
 		initializeGuess();
 		fillWantedLettersArray(this.game);
 		createLettersLayouts(this.game, this.guess);
 		wantedLetterHBox.getChildren().addAll(wantedLetterLayout);
-		mainVBox.getChildren().add(1, wantedLetterHBox);
-		mainVBox.getChildren().add(3, lettersLayout[0]);
+		mainVBox.getChildren().add(1, statsLayout = new StatsLayout(0,
+				game.getWordsLengths().get(game.getTargetWord().length()).size(), 0.0));
+		mainVBox.getChildren().add(3, wantedLetterHBox);
+		mainVBox.getChildren().add(5, lettersLayout[0]);
 		try {
 			hangLayout.updateHang(phase);
 			phase = 1;

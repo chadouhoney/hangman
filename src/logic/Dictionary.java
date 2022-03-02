@@ -19,6 +19,7 @@ public class Dictionary {
 	private ArrayList<String> words;
 	private int numOfWordsTotal;
 	private int numOfWordsAtLeastNineLong;
+	private int maxWordLength;
 
 	public int getNumOfWordsTotal() {
 		return numOfWordsTotal;
@@ -32,7 +33,7 @@ public class Dictionary {
 		return maxWordLength;
 	}
 
-	private int maxWordLength;
+
 	
 
 	private static JsonObject getJson(String openLibraryId) throws IOException {
@@ -166,9 +167,8 @@ public class Dictionary {
 							if (word.length() > 8) {
 								numOfWordsAtLeastNineLong++;
 							}
-							if (word.length() > maxWordLength) {
-								maxWordLength = word.length();
-							}
+							maxWordLength = Math.max(maxWordLength, word.length());
+
 						}
 						else if (word.length() < 6) {
 							throw new InvalidRangeException();

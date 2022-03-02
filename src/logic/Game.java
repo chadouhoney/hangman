@@ -25,7 +25,7 @@ public class Game {
 	private String targetWord;
 	private HashMap<Integer, ArrayList<String>> wordsLengths;
 	private HashMap<Integer, HashMap<Character, Double>> lettersProbabilities;
-	private int wrongLetters = 0, correctLetters = 0, totalRounds = 0, playerPoints = 0;
+	private int wrongLetters, correctLetters, totalRounds, playerPoints;
 	private Double wordsLength6 = 0.0, wordsLength7_9 = 0.0, wordsLength10plus = 0.0;
 	private boolean playerWin = false, playerDefeat = false;
 	private Dictionary dictionary;
@@ -53,12 +53,22 @@ public class Game {
 		this.dictionary = dict;
 		this.targetWord = target;
 		this.wordsLengths = new HashMap<Integer, ArrayList<String>>();
+		this.totalRounds = 0;
+		this.playerPoints = 0;
+		this.correctLetters = 0;
+		this.wrongLetters = 0;
 		System.out.println("TARGET WORD: '" + target + "'");
 
 		// initialize wordsLengths
 		for (int i = 6; i <= dict.getMaxWordLength(); i++) {
 			wordsLengths.put(i, new ArrayList<>());
 		}
+
+		// fill wordsLengths
+		for (String word : dict.getWords()) {
+			wordsLengths.get(word.length()).add(word);
+		}
+		System.out.println(wordsLengths);
 
 		wordsLength6 = wordsLengths.get(6).size() * 1.0 / dict.getNumOfWordsTotal();
 
@@ -73,11 +83,7 @@ public class Game {
 		}
 		wordsLength10plus = wordsLength10plus / dict.getNumOfWordsTotal();
 
-		// fill wordsLengths
-		for (String word : dict.getWords()) {
-			wordsLengths.get(word.length()).add(word);
-		}
-		System.out.println(wordsLengths);
+
 
 		// initialization and initial computation of lettersProbabilities
 		int wordsWithLengthEqualToTarget = wordsLengths.get(target.length()).size();
@@ -255,5 +261,24 @@ public class Game {
 	 */
 	public HashMap<Integer, HashMap<Character, Double>> getLettersProbabilities() {
 		return lettersProbabilities;
+	}
+
+	/**
+	 * Returns a hashmap. The hashmap's keys are integers that represent the length
+	 * of the words contained in the correspinding values' Arraylists. *
+	 * 
+	 * @return the wordsLengths
+	 */
+	public HashMap<Integer, ArrayList<String>> getWordsLengths() {
+		return wordsLengths;
+	}
+
+	/**
+	 * 
+	 *
+	 * @return the percentage of successful guesses
+	 */
+	public double getSussessfulPercentage() {
+		return (correctLetters * 1.0 / totalRounds);
 	}
 }
