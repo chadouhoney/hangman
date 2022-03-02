@@ -1,5 +1,5 @@
-Target word: SINISTER, Rounds: 13, Result: PLAYER VICTORY
-Target word: GENUINE, Rounds: 9, Result: PLAYER DEFEAT
-Target word: RETURNING, Rounds: 12, Result: PLAYER VICTORY
-Target word: ASSASSINS, Rounds: 37, Result: PLAYER DEFEAT
-Target word: ASSASSINS, Rounds: 36, Result: PLAYER DEFEAT
+Target word: ROMANCE, Rounds: 0, Result: PLAYER DEFEAT
+Target word: BASTARDS, Rounds: 0, Result: PLAYER DEFEAT
+Target word: BEYOND, Rounds: 0, Result: PLAYER DEFEAT
+Target word: WINTERS, Rounds: 0, Result: PLAYER DEFEAT
+Target word: FANTANSY, Rounds: 2, Result: PLAYER DEFEAT

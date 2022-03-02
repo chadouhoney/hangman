@@ -10,7 +10,6 @@ import java.util.Scanner;
 
 import ui.Guess;
 
-
 public class Game {
 
 	private static HashMap<Character, Double> alphabet = new HashMap<Character, Double>() {
@@ -20,7 +19,6 @@ public class Game {
 			}
 		}
 	};
-
 
 	private String targetWord;
 	private HashMap<Integer, ArrayList<String>> wordsLengths;
@@ -68,7 +66,6 @@ public class Game {
 		for (String word : dict.getWords()) {
 			wordsLengths.get(word.length()).add(word);
 		}
-		System.out.println(wordsLengths);
 
 		wordsLength6 = wordsLengths.get(6).size() * 1.0 / dict.getNumOfWordsTotal();
 
@@ -82,8 +79,6 @@ public class Game {
 			wordsLength10plus += wordsLengths.get(i).size();
 		}
 		wordsLength10plus = wordsLength10plus / dict.getNumOfWordsTotal();
-
-
 
 		// initialization and initial computation of lettersProbabilities
 		int wordsWithLengthEqualToTarget = wordsLengths.get(target.length()).size();
@@ -226,8 +221,9 @@ public class Game {
 			}
 			myReader.close();
 			FileWriter myWriter = new FileWriter(f.getPath());
-			String currentGameStr = targetWord + "," + totalRounds + "," + victoryOrDefeat + "\n";
-			myWriter.write(currentGameStr);
+			String currentGameStr = "Target word: " + targetWord + ", Rounds: " + totalRounds + ", Result: PLAYER "
+					+ victoryOrDefeat;
+			myWriter.write(currentGameStr + "\n");
 			myWriter.write(temp);
 			myWriter.close();
 
@@ -280,5 +276,21 @@ public class Game {
 	 */
 	public double getSussessfulPercentage() {
 		return (correctLetters * 1.0 / totalRounds);
+	}
+
+	public Dictionary getDictionary() {
+		return dictionary;
+	}
+
+	public Double getWordsLength6() {
+		return wordsLength6;
+	}
+
+	public Double getWordsLength7_9() {
+		return wordsLength7_9;
+	}
+
+	public Double getWordsLength10plus() {
+		return wordsLength10plus;
 	}
 }

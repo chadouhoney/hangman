@@ -14,12 +14,77 @@ import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 
-
 public class Dictionary {
 	private ArrayList<String> words;
 	private int numOfWordsTotal;
 	private int numOfWordsAtLeastNineLong;
 	private int maxWordLength;
+
+	public Dictionary(String textFileId) throws HangmanException, FileNotFoundException {
+		if (textFileId.isEmpty()) {
+			throw new HangmanException() {
+				@Override
+				public String getMessage() {
+					return "ID cannot be empty!!!";
+				}
+			};
+		} else {
+			// try to find a txt file with the given id
+			numOfWordsTotal = 0;
+			numOfWordsAtLeastNineLong = 0;
+			maxWordLength = 0;
+			System.out.println("Trying to find a txt file");
+			File f = new File("src/medialab/hangman_" + textFileId + ".txt");
+			if (f.exists()) {
+				System.out.println("found the txt file");
+				// create dictionary using the file
+				try {
+					words = new ArrayList<>();
+					Scanner myReader = new Scanner(f);
+					while (myReader.hasNextLine()) {
+						String word = myReader.nextLine();
+						if (isInvalid(word)) {
+							throw new InvalidFileFormatException();
+						}
+						if (word.length() > 5 && !words.contains(word)) {
+							words.add(word);
+							System.out.println("added " + word);
+							numOfWordsTotal++;
+							if (word.length() > 8) {
+								numOfWordsAtLeastNineLong++;
+							}
+							if (word.length() > maxWordLength) {
+								maxWordLength = word.length();
+							}
+						}
+
+					}
+					myReader.close();
+
+					if (numOfWordsTotal < 20) {
+						throw new UndersizeException();
+					}
+
+					System.out.println("added " + numOfWordsTotal + "words");
+					if (numOfWordsAtLeastNineLong < (0.2 * numOfWordsTotal)) {
+						throw new UnbalancedException(numOfWordsTotal, numOfWordsAtLeastNineLong);
+					}
+
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+
+			else {
+				throw new FileNotFoundException() {
+					@Override
+					public String getMessage() {
+						return "The file '" + f.getPath() + "' does not exist";
+					}
+				};
+			}
+		}
+	}
 
 	public int getNumOfWordsTotal() {
 		return numOfWordsTotal;
@@ -37,34 +102,35 @@ public class Dictionary {
 	
 
 	private static JsonObject getJson(String openLibraryId) throws IOException {
-		URL url = new URL("https://openlibrary.org/works/"+openLibraryId+".json");
-		
-		//make connection
+		URL url = new URL("https://openlibrary.org/works/" + openLibraryId + ".json");
+
+		// make connection
 		URLConnection urlc = url.openConnection();
 		urlc.setDoOutput(false);
 		urlc.setAllowUserInteraction(false);
-		
+
 		JsonReader rdr = Json.createReader(urlc.getInputStream());
 		JsonObject obj = rdr.readObject();
 		return obj;
 	}
-	
-	public ArrayList<String> getWords(){
+
+	public ArrayList<String> getWords() {
 		return words;
 	}
-	
+
 	private static ArrayList<String> createWordsListAtLeast6Long(String[] s) {
 		ArrayList ret = new ArrayList<>();
-		for(String word : s){
-			// avoid InvalidRangeException and InvalidCountException. Always make sure that when a dictionary is created,
+		for (String word : s) {
+			// avoid InvalidRangeException and InvalidCountException. Always make sure that
+			// when a dictionary is created,
 			// the words will occur once, and will be at least 6 letters long
-			if(word.length() > 5 && !ret.contains(word)){
+			if (word.length() > 5 && !ret.contains(word)) {
 				ret.add(word);
 			}
 		}
 		return ret;
 	}
-	
+
 	public static void createDictionaryTextFile(String textFileId, String openLibraryId) throws HangmanException {
 		if (openLibraryId.isEmpty()) {
 			throw new HangmanException() {
@@ -109,13 +175,11 @@ public class Dictionary {
 					// https://stackoverflow.com/questions/18830813/how-can-i-remove-punctuation-from-input-text-in-java
 					description = description.replaceAll("\\p{Punct}", "");
 
-
 					// Turn all letters to capitals
 					description = description.toUpperCase();
 
 					// words to be added to dictionary will be at least 6 letters long
 					ArrayList<String> words = createWordsListAtLeast6Long(description.split(" "));
-
 
 					// save the dict to a new file
 					try {
@@ -135,74 +199,7 @@ public class Dictionary {
 			}
 		}
 	}
-
-	public Dictionary(String textFileId) throws HangmanException, FileNotFoundException {
-		if (textFileId.isEmpty()) {
-			throw new HangmanException() {
-				@Override
-				public String getMessage() {
-					return "ID cannot be empty!!!";
-				}
-			};
-		}
-		else {
-			// try to find a txt file with the given id
-			numOfWordsTotal = 0;
-			numOfWordsAtLeastNineLong = 0;
-			maxWordLength = 0;
-			File f = new File("src/medialab/hangman_" + textFileId + ".txt");
-			if (f.exists()) {
-				// create dictionary using the file
-				try {
-					words = new ArrayList<>();
-					Scanner myReader = new Scanner(f);
-					while (myReader.hasNextLine()) {
-						String word = myReader.nextLine();
-						if (isInvalid(word)) {
-							throw new InvalidFileFormatException();
-						}
-						if (word.length() > 5 && !words.contains(word)) {
-							words.add(word);
-							numOfWordsTotal++;
-							if (word.length() > 8) {
-								numOfWordsAtLeastNineLong++;
-							}
-							maxWordLength = Math.max(maxWordLength, word.length());
-
-						}
-						else if (word.length() < 6) {
-							throw new InvalidRangeException();
-						} else if (words.contains(word)) {
-							throw new InvalidCountException();
-						}
-
-					}
-					myReader.close();
-
-					if (numOfWordsTotal < 20) {
-						throw new UndersizeException();
-					}
-
-					if (numOfWordsAtLeastNineLong < (0.2 * numOfWordsTotal)) {
-						throw new UnbalancedException(numOfWordsTotal, numOfWordsAtLeastNineLong);
-					}
-
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
-			}
-
-			else {
-				throw new FileNotFoundException() {
-					@Override
-					public String getMessage() {
-						return "The file '" + f.getPath() + "' does not exist";
-					}
-				};
-			}
-		}
-	}
-
+	
 	private boolean onlyContainsLetters(String s) {
 		char[] chars = s.toCharArray();
 		for (char c : chars) {

@@ -5,25 +5,32 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Optional;
+import java.util.Random;
 
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import logic.Dictionary;
 import logic.Game;
 
-public class GameLayout extends HBox {
+public class GameLayout extends VBox {
 	// Layout Variables
 	private HangLayout hangLayout;
 	private LettersLayout[] lettersLayout;
 	private WantedLetterLayout[] wantedLetterLayout;
 	private HBox wantedLetterHBox;
+	private HBox mainHBox;
 	private VBox mainVBox;
+	private MenuBar menuBar;
 	private StatsLayout statsLayout;
 	// For Layout Communication
 	private Guess guess;
@@ -41,6 +48,7 @@ public class GameLayout extends HBox {
 
 			hangLayout = new HangLayout();
 
+			populateMenu();
 			createLettersLayouts(this.game, this.guess);
 			// Wanted Letters
 			fillWantedLettersArray(this.game);
@@ -64,7 +72,11 @@ public class GameLayout extends HBox {
 			//
 			//
 			//
-			getChildren().addAll(hangLayout, mainVBox);
+			System.out.println(GameLayout.this.getParent());
+			System.out.println(GameLayout.this.getScene());
+			mainHBox = new HBox();
+			mainHBox.getChildren().addAll(hangLayout, mainVBox);
+			getChildren().addAll(menuBar, mainHBox);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -74,6 +86,11 @@ public class GameLayout extends HBox {
 	private void putLetterOnHang() {
 		wantedLetterLayout[guess.getForPosition()].setLetterString(guess.getStringProperty());
 		wantedLetterLayout[guess.getForPosition()].setLetterColor("#e0dbd1");
+	}
+
+	private void putLetterOnHang(int i, char c) {
+		wantedLetterLayout[i].setLetterString(String.valueOf(c));
+		wantedLetterLayout[i].setLetterColor("#e0dbd1");
 	}
 
 	private void initializeGuess() {
@@ -106,6 +123,141 @@ public class GameLayout extends HBox {
 						.updateProbabilities(this.game.getLettersProbabilities().get(currentLetterLayout));
 			}
 		});
+	}
+
+	private void populateMenu() {
+		// Menus declarations
+		menuBar = new MenuBar();
+		Menu applicationMenu = new Menu("Application");
+		Menu detailsMenu = new Menu("Details");
+		MenuItem start = new MenuItem("Start");
+		MenuItem load = new MenuItem("Load");
+		MenuItem create = new MenuItem("Create");
+		MenuItem exit = new MenuItem("Exit");
+		MenuItem dict = new MenuItem("Dictionary");
+		MenuItem rounds = new MenuItem("Rounds");
+		MenuItem sol = new MenuItem("Solution");
+		// Menus population
+		applicationMenu.getItems().addAll(start, load, create, exit);
+		detailsMenu.getItems().addAll(dict, rounds, sol);
+		// Actions
+		start.setOnAction(ae -> {
+			playAgain();
+		});
+		load.setOnAction(ae -> {
+			TextInputDialog inputDialog = new TextInputDialog("");
+			inputDialog.setHeaderText("Enter DICTIONARY-ID");
+			inputDialog.showAndWait();
+
+			String dictionaryId = inputDialog.getResult();
+
+			if (dictionaryId != null) {
+				Dictionary d = null;
+				boolean everythingok = true;
+				try {
+					d = new Dictionary(dictionaryId);
+				} catch (Exception e) {
+					Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+					alert.setHeight(300);
+					alert.show();
+					everythingok = false;
+				}
+
+				if (everythingok) {
+					// start new game with random word from d
+					Random rand = new Random();
+					this.game = new Game(d, d.getWords().get(rand.nextInt(d.getWords().size())));
+					playAgain();
+				}
+			}
+		});
+		create.setOnAction(ae -> {
+			final Stage dialog = new Stage();
+			dialog.initModality(Modality.APPLICATION_MODAL);
+			// dialog.initOwner(this.root.sta);
+			VBox dialogVbox = new VBox(10);
+			Label openLibIdLabel = new Label("Open Library Id");
+			Label textNameLabel = new Label("Desired file name");
+
+			TextArea openLibIdTextArea = new TextArea("");
+			openLibIdTextArea.setPrefWidth(100);
+			openLibIdTextArea.setPrefHeight(30);
+
+			TextArea fileIdTextArea = new TextArea("");
+			fileIdTextArea.setPrefWidth(100);
+			fileIdTextArea.setPrefHeight(30);
+
+			Button b = new Button("OK!");
+			b.setOnMouseClicked(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent mouseEvent) {
+					try {
+						// create new dict
+						Dictionary.createDictionaryTextFile(fileIdTextArea.getText().strip(),
+								openLibIdTextArea.getText().strip());
+					} catch (Exception e) {
+						Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+						alert.show();
+					}
+					dialog.close();
+				}
+			});
+		});
+		exit.setOnAction(ae -> {
+			Platform.exit();
+		});
+
+		dict.setOnAction(ae -> {
+			Stage popup = new Stage();
+			popup.setAlwaysOnTop(true);
+			popup.setResizable(false);
+			popup.setTitle("Percentages of Words");
+			popup.initModality(Modality.APPLICATION_MODAL);
+
+			DictionaryLayout dictLayout = null;
+			try {
+				dictLayout = new DictionaryLayout(this.game);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			assert dictLayout != null;
+			Scene scn = new Scene(dictLayout, 400, 300);
+			popup.setScene(scn);
+			popup.showAndWait();
+		});
+		rounds.setOnAction(ae -> {
+			Stage popup = new Stage();
+			popup.setAlwaysOnTop(true);
+			popup.setResizable(false);
+			popup.setTitle("Latest Results");
+			popup.initModality(Modality.APPLICATION_MODAL);
+
+			RoundsLayout rl = null;
+			try {
+				rl = new RoundsLayout();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			assert rl != null;
+			Scene scn = new Scene(rl, 600, 200);
+			popup.setScene(scn);
+			popup.showAndWait();
+		});
+		sol.setOnAction(ae -> {
+			game.logGame("DEFEAT");
+			String target = this.game.getTargetWord();
+			for (int i = 0; i < target.length(); i++) {
+				putLetterOnHang(i, target.charAt(i));
+			}
+			try {
+				showGameOver("YOU ARE A FCKING QUITTER!!");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
+
+		menuBar.getMenus().addAll(applicationMenu, detailsMenu);
+
 	}
 
 	private void fillWantedLettersArray(Game game) {
@@ -174,8 +326,10 @@ public class GameLayout extends HBox {
 		ButtonType mainMenuBut = new ButtonType("Back to Main Menu");
 		ButtonType playAgainBut = new ButtonType("Play Again!");
 		Alert gameOver = new Alert(Alert.AlertType.NONE, "Game Over!", mainMenuBut, playAgainBut);
+		gameOver.initOwner(GameLayout.this.getScene().getWindow());
+		gameOver.setY(400.0);
 		gameOver.setHeaderText(headerTxt);
-		gameOver.initStyle(StageStyle.UNDECORATED);
+		gameOver.initStyle(StageStyle.DECORATED);
 		Optional<ButtonType> res = gameOver.showAndWait();
 		ButtonType resChoice = res.orElse(null);
 		if (resChoice == mainMenuBut) {
