@@ -170,6 +170,11 @@ public class Dictionary {
 								maxWordLength = word.length();
 							}
 						}
+						else if (word.length() < 6) {
+							throw new InvalidRangeException();
+						} else if (words.contains(word)) {
+							throw new InvalidCountException();
+						}
 
 					}
 					myReader.close();
@@ -198,8 +203,17 @@ public class Dictionary {
 		}
 	}
 
+	private boolean onlyContainsLetters(String s) {
+		char[] chars = s.toCharArray();
+		for (char c : chars) {
+			if (!Character.isLetter(c)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	private boolean isInvalid(String word) {
-		// todo
-		return false;
+		return !word.toUpperCase().equals(word) || !onlyContainsLetters(word);
 	}
 }

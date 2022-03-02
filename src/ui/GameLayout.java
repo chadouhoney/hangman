@@ -179,11 +179,11 @@ public class GameLayout extends HBox {
 	private void goToMainMenu() throws IOException {
 		Stage stg = (Stage) GameLayout.this.getScene().getWindow();
 		StackPane root = new StackPane();
-		root.setPrefSize(1000, 600);
-		root.setAlignment(Pos.CENTER_LEFT);
+		root.setPrefSize(1200, 600);
+		root.setAlignment(Pos.CENTER);
 
 		InputStream is = Files.newInputStream(Paths.get("src/resources/images/chalkboard.jpg"));
-		Image img = new Image(is, 1000, 600, false, false);
+		Image img = new Image(is, 1200, 600, false, false);
 		is.close();
 		ImageView imgView = new ImageView(img);
 		imgView.fitHeightProperty().bind(stg.heightProperty());
@@ -192,7 +192,7 @@ public class GameLayout extends HBox {
 		MainMenu mainMenu = new MainMenu(root);
 		root.getChildren().addAll(imgView, mainMenu);
 
-		Scene s = new Scene(root, 1000, 600);
+		Scene s = new Scene(root, 1200, 600);
 		stg.setScene(s);
 		stg.show();
 	}

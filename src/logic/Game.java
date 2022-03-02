@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 import ui.Guess;
 
+
 public class Game {
 
 	private static HashMap<Character, Double> alphabet = new HashMap<Character, Double>() {
@@ -20,20 +21,34 @@ public class Game {
 		}
 	};
 
-	private int playerPoints = 0;
+
 	private String targetWord;
 	private HashMap<Integer, ArrayList<String>> wordsLengths;
 	private HashMap<Integer, HashMap<Character, Double>> lettersProbabilities;
-	private int wrongLetters = 0, correctLetters = 0, totalRounds = 0;
+	private int wrongLetters = 0, correctLetters = 0, totalRounds = 0, playerPoints = 0;
 	private Double wordsLength6 = 0.0, wordsLength7_9 = 0.0, wordsLength10plus = 0.0;
 	private boolean playerWin = false, playerDefeat = false;
 	private Dictionary dictionary;
 
+	/**
+	 * Given the current dictionary, chooses a new random word and creates a new
+	 * game, with the given word for a target.
+	 *
+	 * @return the new game
+	 */
 	public Game newGame() {
 		Random rand = new Random();
 		return new Game(dictionary, dictionary.getWords().get(rand.nextInt(dictionary.getWords().size())));
 	}
 
+	/**
+	 * Instantiates a new Game, given a dictionary and a target word.
+	 *
+	 * @param dict
+	 *            the dictionary
+	 * @param target
+	 *            the target word
+	 */
 	public Game(Dictionary dict, String target) {
 		this.dictionary = dict;
 		this.targetWord = target;
@@ -85,6 +100,25 @@ public class Game {
 
 	}
 
+	/**
+	 * Given the input Guess object, checks if the letter chosen by the Guess object
+	 * fits at the index chosen by the object If the letter is correct, recalculates
+	 * the letters' probabilities after removing all words that do not contain the
+	 * certain letter at the certain index.
+	 *
+	 * If the letter is incorrect, recalculates the letters' probabilities after
+	 * removing all words that contain the certain letter at the certain index.
+	 * 
+	 * After each case, points are awarded/subtracted from the player and checks are
+	 * made for victory/defeat, and if the criteria are met, the game is logged at
+	 * "src/logging/history.txt"
+	 * 
+	 *
+	 * @param move
+	 *            a Guess object. Contains information about the index and the
+	 *            letter.
+	 * @return true if the guess is successful, false otherwise
+	 */
 	public boolean guess(Guess move) {
 		int guessIndex = move.getForPosition();
 		Character guessCharacter = move.getStringProperty().charAt(0);
@@ -130,12 +164,6 @@ public class Game {
 				move.setPlayerWin(true);
 				logGame("VICTORY");
 			}
-			// System.out.println("CORRECT GUESS");
-			// System.out.println("Player points: " + Integer.toString(playerPoints));
-			// System.out.println("Candidate words after recalculating:");
-			// System.out.println(wordsLengths.get(targetWord.length()));
-			// System.out.println("Probabilities after recalculating:");
-			// System.out.println(lettersProbabilities);
 			return true;
 		}
 		// WRONG GUESS
@@ -169,18 +197,17 @@ public class Game {
 				logGame("DEFEAT");
 
 			}
-
-			// System.out.println("WRONG GUESS");
-			// System.out.println("Player points: " + Integer.toString(playerPoints));
-			// System.out.println("Candidate words after recalculating:");
-			// System.out.println(wordsLengths.get(targetWord.length()));
-			// System.out.println("Probabilities after recalculating:");
-			// System.out.println(lettersProbabilities);
-
 			return false;
 		}
 	}
 
+	/**
+	 * Store the game's results at "src/logging/history.txt" (target word, rounds,
+	 * outcome)
+	 *
+	 * @param victoryOrDefeat
+	 *            the game's outcome
+	 */
 	public void logGame(String victoryOrDefeat) {
 		File f = new File("src/logging/history.txt");
 		try {
@@ -193,9 +220,8 @@ public class Game {
 			}
 			myReader.close();
 			FileWriter myWriter = new FileWriter(f.getPath());
-			String currentGameStr = "Target word: " + targetWord + ", Rounds: " + totalRounds + ", Result: PLAYER "
-					+ victoryOrDefeat;
-			myWriter.write(currentGameStr + "\n");
+			String currentGameStr = targetWord + "," + totalRounds + "," + victoryOrDefeat + "\n";
+			myWriter.write(currentGameStr);
 			myWriter.write(temp);
 			myWriter.close();
 
@@ -204,24 +230,30 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Gets player points.
+	 *
+	 * @return the player's points
+	 */
 	public int getPlayerPoints() {
 		return playerPoints;
 	}
 
+	/**
+	 * Gets target word.
+	 *
+	 * @return the target word
+	 */
 	public String getTargetWord() {
 		return targetWord;
 	}
 
-	public boolean getPlayerWin() {
-		return playerWin;
-	}
-
-	public boolean getPlayerDefeat() {
-		return playerDefeat;
-	}
-
+	/**
+	 * Gets letters probabilities.
+	 *
+	 * @return the letters probabilities
+	 */
 	public HashMap<Integer, HashMap<Character, Double>> getLettersProbabilities() {
-		// System.out.println(wordsLengths);
 		return lettersProbabilities;
 	}
 }
